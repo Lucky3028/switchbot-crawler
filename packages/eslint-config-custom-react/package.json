@@ -1,0 +1,22 @@
+{
+  "name": "eslint-config-custom-react",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.1.0",
+    "eslint-config-custom-base": "workspace:*",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-jsx-expressions": "^1.3.1",
+    "eslint-plugin-react": "^7.33.1",
+    "eslint-plugin-react-hooks": "^4.6.0"
+  },
+  "devDependencies": {
+    "prettier-config": "workspace:*"
+  }
+}
