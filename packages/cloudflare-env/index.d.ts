@@ -1,6 +1,6 @@
 /// <reference types="@cloudflare/workers-types" />
 
-interface Env {
+export interface Env {
   __STATIC_CONTENT: KVNamespace;
 
   HISTORY: KVNamespace;
