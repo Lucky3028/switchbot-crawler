@@ -1,11 +1,8 @@
 // See: https://zenn.dev/jay_es/articles/2021-04-22-config-js#.eslintrc.js
 /** @type {import('eslint/lib/shared/types').ConfigData} */
-module.exports =  {
+module.exports = {
   root: true,
-  extends: [
-    'eslint:recommended',
-    'prettier',
-  ],
+  extends: ['eslint:recommended', 'airbnb-base', 'airbnb-typescript/base', 'prettier'],
   env: {
     browser: true,
     es2021: true,
@@ -40,7 +37,6 @@ module.exports =  {
         next: 'return',
       },
     ],
-    "no-unused-vars": "error",
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
@@ -74,6 +70,12 @@ module.exports =  {
       files: ['.eslintrc.{js,cjs}'],
       parserOptions: {
         sourceType: 'script',
+      },
+    },
+    {
+      files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
+      rules: {
+        'no-undef': 'off',
       },
     },
   ],
