@@ -3,6 +3,7 @@
 module.exports = {
   root: true,
   extends: ['eslint:recommended', 'airbnb-base', 'airbnb-typescript/base', 'prettier'],
+  plugins: ['@typescript-eslint', 'prefer-arrow-functions'],
   env: {
     browser: true,
     es2021: true,
@@ -35,6 +36,15 @@ module.exports = {
         blankLine: 'always',
         prev: '*',
         next: 'return',
+      },
+    ],
+    'prefer-arrow-functions/prefer-arrow-functions': [
+      'error',
+      {
+        classPropertiesAllowed: true,
+        disallowPrototype: true,
+        returnStyle: 'implicit',
+        singleReturnOnly: false,
       },
     ],
     '@typescript-eslint/no-unused-vars': [
