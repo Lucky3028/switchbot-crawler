@@ -5,7 +5,7 @@
   "display": "Default",
   "compilerOptions": {
     "moduleResolution": "Node",
-    "types": ["Node"],
+    "types": ["node"],
     "resolveJsonModule": true
   },
   "exclude": ["node_modules"]
