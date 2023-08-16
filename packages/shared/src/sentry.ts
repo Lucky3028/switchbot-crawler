@@ -1,7 +1,20 @@
 import { Toucan } from 'toucan-js';
 
-// See: https://github.com/cloudflare/worker-sentry/blob/main/index.mjs
-export const initSentry = (sentryDsn: string, sentryClientId: string, sentryClientSecret: string, context: ExecutionContext) =>
+/**
+ * Sentryのクライアントを生成する
+ * @param sentryDsn [SentryのDSN](https://docs.sentry.io/product/sentry-basics/dsn-explainer/)
+ * @param cloudflareAccessClientId [CloudflareAccessのServiceToken](https://developers.cloudflare.com/cloudflare-one/identity/service-tokens/)で発行されるClientID
+ * @param cloudflareAccessClientSecret [CloudflareAccessのServiceToken](https://developers.cloudflare.com/cloudflare-one/identity/service-tokens/)で発行されるClientSecret
+ * @param context CloudflareWorkerのContext
+ * @returns Sentryクライアントのインスタンス
+ * @see https://github.com/cloudflare/worker-sentry/blob/main/index.mjs
+ */
+export const initSentry = (
+  sentryDsn: string,
+  cloudflareAccessClientId: string,
+  cloudflareAccessClientSecret: string,
+  context: ExecutionContext,
+) =>
   new Toucan({
     dsn: sentryDsn,
     context,
@@ -21,8 +34,8 @@ export const initSentry = (sentryDsn: string, sentryClientId: string, sentryClie
     },
     transportOptions: {
       headers: {
-        'CF-Access-Client-ID': sentryClientId,
-        'CF-Access-Client-Secret': sentryClientSecret,
+        'CF-Access-Client-ID': cloudflareAccessClientId,
+        'CF-Access-Client-Secret': cloudflareAccessClientSecret,
       },
     },
     sampleRate: 0.25,
