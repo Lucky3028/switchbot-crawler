@@ -1,0 +1,24 @@
+{
+  "name": "shared",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/eslint": "^8.44.2",
+    "@types/node": "^18.16.0",
+    "eslint": "^8.46.0",
+    "eslint-config-custom": "workspace:*",
+    "prettier": "^3.0.1",
+    "tsconfig": "workspace:*",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "base64-arraybuffer": "^1.0.2",
+    "toucan-js": "^3.2.1",
+    "zod": "^3.22.1"
+  }
+}
