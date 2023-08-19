@@ -2,6 +2,14 @@ import { encode } from 'base64-arraybuffer';
 import { type AirConditionerCommand, controlCommandResponse } from './schema/switchbot';
 
 /**
+ * SwitchBotのAPIにアクセスするための認証情報
+ */
+export type SwitchBotCredentials = {
+  token: string;
+  secret: string;
+};
+
+/**
  * SwitchBotのAPIのURL
  */
 const url = 'https://api.switch-bot.com/v1.1/devices';
@@ -14,9 +22,9 @@ const url = 'https://api.switch-bot.com/v1.1/devices';
  * @param nonce 何かしらの乱数データ
  * @returns 署名
  */
-const generateSign = async (token: string, secret: string, now: number, nonce: string) => {
-  const data = `${token}${now}${nonce}`;
-  const secretKeyData = new TextEncoder().encode(secret);
+const generateSign = async (credentials: SwitchBotCredentials, now: number, nonce: string) => {
+  const data = `${credentials.token}${now}${nonce}`;
+  const secretKeyData = new TextEncoder().encode(credentials.secret);
   const key = await crypto.subtle.importKey('raw', secretKeyData, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
   const signTerm = await crypto.subtle.sign('HMAC', key, Buffer.from(data, 'utf-8'));
 
@@ -29,13 +37,13 @@ const generateSign = async (token: string, secret: string, now: number, nonce: s
  * @param secret SwitchBotにアクセスするためのシークレット値
  * @returns Authorizationヘッダ
  */
-const generateAuthorizationHeader = async (token: string, secret: string) => {
+const generateAuthorizationHeader = async (credentials: SwitchBotCredentials) => {
   const t = Date.now();
   const nonce = crypto.randomUUID();
-  const sign = await generateSign(token, secret, t, nonce);
+  const sign = await generateSign(credentials, t, nonce);
 
   return {
-    Authorization: token,
+    Authorization: credentials.token,
     sign,
     nonce,
     t: t.toString(),
@@ -49,8 +57,8 @@ const generateAuthorizationHeader = async (token: string, secret: string) => {
  * @param path パス
  * @returns レスポンス
  */
-const getRequest = async (token: string, secret: string, path?: string) => {
-  const authHeader = await generateAuthorizationHeader(token, secret);
+const getRequest = async (credentials: SwitchBotCredentials, path?: string) => {
+  const authHeader = await generateAuthorizationHeader(credentials);
   const response = await fetch(`${url}/${path ?? ''}`, {
     method: 'GET',
     headers: { ...authHeader },
@@ -69,8 +77,8 @@ const getRequest = async (token: string, secret: string, path?: string) => {
  * @param data POSTするデータ
  * @returns レスポンス
  */
-const postRequest = async (token: string, secret: string, path: string, data: unknown) => {
-  const authHeader = await generateAuthorizationHeader(token, secret);
+const postRequest = async (credentials: SwitchBotCredentials, path: string, data: unknown) => {
+  const authHeader = await generateAuthorizationHeader(credentials);
   const response = await fetch(`${url}/${path}`, {
     method: 'POST',
     headers: { ...authHeader, 'Content-Type': 'application/json' },
@@ -88,12 +96,12 @@ const postRequest = async (token: string, secret: string, path: string, data: un
  * @param secret SwitchBotにアクセスするためのシークレット値
  * @returns SwitchBotにアクセスするための関数をまとめたオブジェクト
  */
-export const switchbot = (token: string, secret: string) =>
+export const switchbot = (credentials: SwitchBotCredentials) =>
   ({
     getMeterStatus: async (deviceId: string) => {
       const path = `${deviceId}/status`;
 
-      return getRequest(token, secret, path)
+      return getRequest(credentials, path)
         .then(async (res) => res.json())
         .then((json) => controlCommandResponse.parse(json));
     },
@@ -107,7 +115,7 @@ export const switchbot = (token: string, secret: string) =>
         parameter: `${settingTemp},1,1,on`,
       };
 
-      return postRequest(token, secret, path, data)
+      return postRequest(credentials, path, data)
         .then(async (res) => res.json())
         .then((json) => controlCommandResponse.parse(json));
     },
