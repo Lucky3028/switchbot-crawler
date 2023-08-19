@@ -1,5 +1,6 @@
 import { encode } from 'base64-arraybuffer';
 import { type AirConditionerCommand, controlCommandResponse, meterStatusResponse } from './schema/switchbot';
+import { HttpError, SwitchBotApiError, CustomZodError } from './error';
 
 /**
  * SwitchBotのAPIにアクセスするための認証情報
@@ -12,7 +13,7 @@ export type SwitchBotCredentials = {
 /**
  * SwitchBotのAPIのURL
  */
-const url = 'https://api.switch-bot.com/v1.1/devices';
+const SWITCHBOT_API_URL_PREFIX = 'https://api.switch-bot.com/v1.1/devices';
 
 /**
  * 署名を生成する
@@ -59,14 +60,16 @@ const generateAuthorizationHeader = async (credentials: SwitchBotCredentials) =>
  */
 const getRequest = async (credentials: SwitchBotCredentials, path?: string) => {
   const authHeader = await generateAuthorizationHeader(credentials);
-  const response = await fetch(`${url}/${path ?? ''}`, {
+  const url = `${SWITCHBOT_API_URL_PREFIX}/${path ?? ''}`;
+
+  return fetch(url, {
     method: 'GET',
     headers: { ...authHeader },
-  });
-  // TODO: error
-  if (!response.ok) throw new Error('error');
+  }).then((res) => {
+    if (!res.ok) return new HttpError('Error while GET request.', url, res.status, res.statusText);
 
-  return response;
+    return res;
+  });
 };
 
 /**
@@ -79,15 +82,17 @@ const getRequest = async (credentials: SwitchBotCredentials, path?: string) => {
  */
 const postRequest = async (credentials: SwitchBotCredentials, path: string, data: unknown) => {
   const authHeader = await generateAuthorizationHeader(credentials);
-  const response = await fetch(`${url}/${path}`, {
+  const url = `${SWITCHBOT_API_URL_PREFIX}/${path}`;
+
+  return fetch(url, {
     method: 'POST',
     headers: { ...authHeader, 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
-  });
-  // TODO: error
-  if (!response.ok) throw new Error('error');
+  }).then((res) => {
+    if (!res.ok) return new HttpError('Error while POST request.', url, res.status, res.statusText);
 
-  return response;
+    return res;
+  });
 };
 
 /**
@@ -102,8 +107,18 @@ export const switchbot = (credentials: SwitchBotCredentials) =>
       const path = `${deviceId}/status`;
 
       return getRequest(credentials, path)
-        .then(async (res) => res.json())
-        .then((json) => meterStatusResponse.parse(json).body);
+        .then(async (res) => {
+          if (res instanceof HttpError) throw new SwitchBotApiError('Failed to get meter status.', res);
+
+          return res.json();
+        })
+        .then((json) => {
+          const parsed = meterStatusResponse.safeParse(json);
+
+          if (!parsed.success) throw new CustomZodError("the data for the meter's status", parsed.error);
+
+          return parsed.data.body;
+        });
     },
     turnOnAirConditioner: async (deviceId: string, settingTemp: number) => {
       const path = `${deviceId}/commands`;
@@ -116,7 +131,17 @@ export const switchbot = (credentials: SwitchBotCredentials) =>
       };
 
       return postRequest(credentials, path, data)
-        .then(async (res) => res.json())
-        .then((json) => controlCommandResponse.parse(json));
+        .then(async (res) => {
+          if (res instanceof HttpError) throw new SwitchBotApiError('Failed to turn on air conditioner.', res);
+
+          return res.json();
+        })
+        .then((json) => {
+          const parsed = controlCommandResponse.safeParse(json);
+
+          if (!parsed.success) throw new CustomZodError('the result of control command', parsed.error);
+
+          return parsed.data;
+        });
     },
   }) as const;
