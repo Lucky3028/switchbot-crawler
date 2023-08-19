@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "license": "MIT",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "fmt": "prettier --check index.js",
+    "fmt:fix": "prettier --write index.js"
+  },
   "publishConfig": {
     "access": "public"
   },

@@ -2,6 +2,10 @@
   "name": "cloudflare-env",
   "version": "1.0.0",
   "license": "MIT",
+  "scripts": {
+    "lint": "eslint index.d.ts",
+    "lint:fix": "eslint --fix index.d.ts"
+  },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230807.0",
     "eslint": "^8.46.0",
