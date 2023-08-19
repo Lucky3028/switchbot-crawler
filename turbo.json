@@ -9,13 +9,13 @@
       "cache": false
     },
     "lint": {
-      "outputs": []
+      "cache": false
     },
     "fmt": {
-      "outputs": []
+      "cache": false
     },
     "test": {
-      "outputs": []
+      "cache": false
     },
     "typecheck": {
       "outputs": ["tsconfig.tsbuildinfo"]
