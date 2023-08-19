@@ -2,7 +2,17 @@
   "name": "turborepo-empty-starter",
   "version": "1.0.0",
   "private": true,
-  "description": "An empty Turborepo starter",
+  "packageManager": "pnpm@8.6.12",
+  "engines": {
+    "node": "18.x",
+    "npm": "Use pnpm!",
+    "yarn": "Use pnpm!",
+    "pnpm": ">=8"
+  },
+  "volta": {
+    "node": "18.17.1",
+    "pnpm": "8.6.12"
+  },
   "scripts": {
     "build": "turbo build",
     "lint": "turbo lint",
@@ -11,7 +21,6 @@
     "test": "turbo test"
   },
   "license": "MIT",
-  "packageManager": "pnpm@8.6.12",
   "devDependencies": {
     "eslint": "^8.46.0",
     "eslint-config-custom": "workspace:*",
