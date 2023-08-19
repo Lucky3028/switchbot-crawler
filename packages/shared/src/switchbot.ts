@@ -1,4 +1,5 @@
 import { encode } from 'base64-arraybuffer';
+import { Buffer } from 'node:buffer';
 import { type AirConditionerCommand, controlCommandResponse, meterStatusResponse } from './schema/switchbot';
 import { HttpError, SwitchBotApiError, CustomZodError } from './error';
 
