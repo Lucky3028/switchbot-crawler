@@ -1,0 +1,38 @@
+{
+  "name": "auto-run-ac",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint --fix ./src",
+    "fmt": "prettier --check ./src",
+    "fmt:fix": "prettier --write ./src",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "postinstall": "typesync || :"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20230419.0",
+    "@types/eslint": "^8.44.2",
+    "eslint": "^8.46.0",
+    "eslint-config-custom": "workspace:*",
+    "prettier": "^3.0.1",
+    "shared": "workspace: *",
+    "tsconfig": "workspace:*",
+    "typescript": "^5.0.4",
+    "typesync": "^0.11.1",
+    "vite": "^4.4.9",
+    "vitest": "^0.34.1",
+    "wrangler": "^3.0.0"
+  },
+  "dependencies": {
+    "@cloudflare/kv-asset-handler": "^0.3.0",
+    "@holiday-jp/holiday_jp": "^2.4.0",
+    "@remix-run/cloudflare": "^1.19.2",
+    "cloudflare-env": "workspace:*",
+    "date-fns": "^2.30.0",
+    "date-fns-tz": "^2.0.0"
+  }
+}

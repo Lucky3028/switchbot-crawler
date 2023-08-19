@@ -1,0 +1,18 @@
+name = "auto-run-ac"
+main = "src/worker.ts"
+compatibility_date = "2023-08-01"
+compatibility_flags = ["nodejs_compat"]
+# アカウントIDはシークレットな値ではない
+account_id = "fff06038a70892193e0fa1e9e270436a"
+kv_namespaces = [
+  { binding = "HISTORY", id = "e3abe12e90ec4c88a9df7ae9042361ff", preview_id = "377c5b3ea5c34abc9767cb365ca769fe" }
+]
+
+[vars]
+METER_DEVICE_ID = "DC49091D8404"
+AIR_CONDITIONER_DEVICE_ID = "02-202306140644-28427602"
+SENTRY_DSN = "https://a806b31ea1f54f39ac1f7526d1c20e98@sentry.celesteria.net/2"
+
+[triggers]
+# 15分ごとに実行する
+crons = ["*/15 * * * *"]
