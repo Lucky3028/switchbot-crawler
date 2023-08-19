@@ -27,6 +27,15 @@ module.exports = {
       },
     ],
     'react/require-default-props': 'off',
+    'react/function-component-definition': [
+      'error',
+      {
+        namedComponents: 'arrow-function',
+        unnamedComponents: 'arrow-function',
+      },
+    ],
     'jsx-expressions/strict-logical-expressions': 'error',
+    'object-curly-newline': 'off',
+    'max-len': 'off',
   },
 };
