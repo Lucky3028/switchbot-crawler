@@ -5,7 +5,7 @@ compatibility_flags = ["nodejs_compat"]
 # アカウントIDはシークレットな値ではない
 account_id = "fff06038a70892193e0fa1e9e270436a"
 kv_namespaces = [
-  { binding = "HISTORY", id = "e3abe12e90ec4c88a9df7ae9042361ff", preview_id = "377c5b3ea5c34abc9767cb365ca769fe" }
+  { binding = "HISTORY", id = "2622aa221d65472ca1b9595c31a388cf", preview_id = "d39881391df24b1891c808b74d9b4937" }
 ]
 
 [vars]
@@ -16,7 +16,7 @@ SENTRY_DSN = "https://a806b31ea1f54f39ac1f7526d1c20e98@sentry.celesteria.net/2"
 
 [env.development]
 kv_namespaces = [
-  { binding = "HISTORY", id = "e3abe12e90ec4c88a9df7ae9042361ff", preview_id = "377c5b3ea5c34abc9767cb365ca769fe" },
+  { binding = "HISTORY", id = "2622aa221d65472ca1b9595c31a388cf", preview_id = "d39881391df24b1891c808b74d9b4937" },
 ]
 
 [env.development.vars]
