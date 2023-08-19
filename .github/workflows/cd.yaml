@@ -20,7 +20,7 @@ jobs:
       - name: Setup Node.js with Volta
         uses: ./.github/actions/setup-node
       - name: Publish
-        uses: cloudflare/wrangler-action@v3.0.2
+        uses: cloudflare/wrangler-action@2.0.0
         with:
           workingDirectory: apps/${{ matrix.app }}
           apiToken: ${{ secrets.CF_TOKEN }}
