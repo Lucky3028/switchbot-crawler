@@ -11,6 +11,12 @@
     "lint": {
       "outputs": []
     },
+    "fmt": {
+      "outputs": []
+    },
+    "test": {
+      "outputs": []
+    },
     "typecheck": {
       "outputs": ["tsconfig.tsbuildinfo"]
     }
