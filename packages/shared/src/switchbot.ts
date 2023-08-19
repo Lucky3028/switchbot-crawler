@@ -1,5 +1,5 @@
 import { encode } from 'base64-arraybuffer';
-import { type AirConditionerCommand, controlCommandResponse } from './schema/switchbot';
+import { type AirConditionerCommand, controlCommandResponse, meterStatusResponse } from './schema/switchbot';
 
 /**
  * SwitchBotのAPIにアクセスするための認証情報
@@ -103,7 +103,7 @@ export const switchbot = (credentials: SwitchBotCredentials) =>
 
       return getRequest(credentials, path)
         .then(async (res) => res.json())
-        .then((json) => controlCommandResponse.parse(json));
+        .then((json) => meterStatusResponse.parse(json).body);
     },
     turnOnAirConditioner: async (deviceId: string, settingTemp: number) => {
       const path = `${deviceId}/commands`;
