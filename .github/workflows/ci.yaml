@@ -1,0 +1,21 @@
+name: CI
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+  workflow_call:
+jobs:
+  ci:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js with Volta
+        uses: ./.github/actions/setup-node
+      - name: Lint
+        run: pnpm lint
+      - name: Format
+        run: pnpm fmt
+      - name: Test
+        run: pnpm test

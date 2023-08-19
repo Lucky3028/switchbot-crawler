@@ -1,0 +1,39 @@
+name: CI and CD
+on:
+  push:
+    branches:
+      - main
+jobs:
+  ci:
+    uses: Lucky3028/switchbot-crawler/.github/workflows/ci.yaml@main
+  cd:
+    name: Deploy to Cloudflare Workers
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      matrix:
+        app: ["auto-run-ac"]
+    needs:
+      - ci
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js with Volta
+        uses: ./.github/actions/setup-node
+      - name: Publish
+        uses: cloudflare/wrangler-action@v3.0.2
+        with:
+          workingDirectory: apps/${{ matrix.app }}
+          apiToken: ${{ secrets.CF_TOKEN }}
+          command: deploy
+          secrets: |
+            SWITCHBOT_TOKEN
+            SWITCHBOT_CLIENT_SECRET
+            SENTRY_CLIENT_ID
+            SENTRY_CLIENT_SECRET
+            NOTIFICATION_WEBHOOK_URL
+        env:
+          SWITCHBOT_TOKEN: ${{ secrets.SWITCHBOT_TOKEN }}
+          SWITCHBOT_CLIENT_SECRET: ${{ secrets.SWITCHBOT_CLIENT_SECRET }}
+          SENTRY_CLIENT_ID: ${{ secrets.SENTRY_CLIENT_ID }}
+          SENTRY_CLIENT_SECRET: ${{ secrets.SENTRY_CLIENT_SECRET }}
+          NOTIFICATION_WEBHOOK_URL: ${{ secrets.NOTIFICATION_WEBHOOK_URL }}
