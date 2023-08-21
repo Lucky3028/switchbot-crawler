@@ -3,10 +3,18 @@ import { isWeekend } from 'date-fns';
 import { initSentry, switchbot } from 'shared';
 import { utcToZonedTime } from 'date-fns-tz';
 import { isHoliday } from '@holiday-jp/holiday_jp';
+import { getAssetFromKV } from '@cloudflare/kv-asset-handler';
+import type { AppLoadContext } from '@remix-run/cloudflare';
+import { createRequestHandler } from '@remix-run/cloudflare';
+import __STATIC_CONTENT_MANIFEST from '__STATIC_CONTENT_MANIFEST';
+import * as build from 'switchbot-web/build';
 import { getUtcDate, isBannedHour, formatDate } from './lib/date';
 import { notifyAirConditionerOnToDiscord } from './lib/discord';
 import { TIME_ZONE, TRIGGERS } from './lib/const';
 import { filterValidTrigger } from './lib/trigger';
+
+const MANIFEST = JSON.parse(__STATIC_CONTENT_MANIFEST);
+const handleRemixRequest = createRequestHandler(build, process.env['NODE_ENV']);
 
 /**
  * 与えられた日付において、本プログラムによってエアコンがつけられたかどうかを返す
@@ -47,6 +55,44 @@ export default {
       if (e instanceof Error && env.NODE_ENV === 'production') {
         sentry.captureException(e);
       }
+    }
+  },
+  fetch: async (request: Request, env: Env, ctx: ExecutionContext): Promise<Response> => {
+    try {
+      const url = new URL(request.url);
+      const ttl = url.pathname.startsWith('/build/')
+        ? 60 * 60 * 24 * 365 // 1 year
+        : 60 * 5; // 5 minutes
+
+      return await getAssetFromKV(
+        {
+          request,
+          waitUntil: ctx.waitUntil.bind(ctx),
+        } as FetchEvent,
+        {
+          // eslint-disable-next-line no-underscore-dangle
+          ASSET_NAMESPACE: env.__STATIC_CONTENT,
+          ASSET_MANIFEST: MANIFEST,
+          cacheControl: {
+            browserTTL: ttl,
+            edgeTTL: ttl,
+          },
+        },
+      );
+    } catch (error) {
+      console.error(error);
+    }
+
+    try {
+      const loadContext: AppLoadContext = {
+        env,
+      };
+
+      return await handleRemixRequest(request, loadContext);
+    } catch (error) {
+      console.log(error);
+
+      return new Response('An unexpected error occurred', { status: 500 });
     }
   },
 };
