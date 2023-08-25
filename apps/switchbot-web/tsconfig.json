@@ -2,6 +2,7 @@
   "extends": "tsconfig/base.json",
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2019"],
+    "types": ["@cloudflare/workers-types", "cloudflare-env"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
@@ -17,5 +18,6 @@
     },
     "noEmit": true
   },
-  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"]
+  "include": ["remix.env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+  "exclude": ["node_modules", "build", "public/build"],
 }

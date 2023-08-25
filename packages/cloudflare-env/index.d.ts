@@ -1,6 +1,6 @@
 /// <reference types="@cloudflare/workers-types" />
 
-export interface Env {
+type Env = {
   __STATIC_CONTENT: KVNamespace;
 
   HISTORY: KVNamespace;
@@ -19,4 +19,4 @@ export interface Env {
   SENTRY_CLIENT_SECRET: string;
   NOTIFICATION_WEBHOOK_URL: string;
   // endregion
-}
+};
