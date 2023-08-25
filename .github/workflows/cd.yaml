@@ -7,7 +7,7 @@ jobs:
   ci:
     uses: Lucky3028/switchbot-crawler/.github/workflows/ci.yaml@main
   cd:
-    name: Deploy to Cloudflare Workers
+    name: Build and Deploy to Cloudflare Workers
     runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
@@ -19,6 +19,8 @@ jobs:
       - uses: actions/checkout@v3
       - name: Setup Node.js with Volta
         uses: ./.github/actions/setup-node
+      - name: Build
+        run: pnpm build
       - name: Publish
         uses: cloudflare/wrangler-action@2.0.0
         with:
