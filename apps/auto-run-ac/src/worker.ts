@@ -1,9 +1,8 @@
 import type { Env } from 'cloudflare-env';
-import { isWeekend } from 'date-fns';
 import { initSentry, switchbot } from 'shared';
 import { utcToZonedTime } from 'date-fns-tz';
 import { isHoliday } from '@holiday-jp/holiday_jp';
-import { getUtcDate, isBannedHour, formatDate } from './lib/date';
+import { getUtcDate, isBannedHour, formatDate, isWeekend } from './lib/date';
 import { notifyAirConditionerOnToDiscord } from './lib/discord';
 import { TIME_ZONE, TRIGGERS } from './lib/const';
 import { filterValidTrigger } from './lib/trigger';
