@@ -1,4 +1,3 @@
-import { isWeekend } from 'date-fns';
 import { initSentry, switchbot } from 'shared';
 import { utcToZonedTime } from 'date-fns-tz';
 import { isHoliday } from '@holiday-jp/holiday_jp';
@@ -8,7 +7,7 @@ import { Hono } from 'hono';
 import type { AppLoadContext } from '@remix-run/cloudflare';
 import { createRequestHandler } from '@remix-run/cloudflare';
 import { getAssetFromKV } from '@cloudflare/kv-asset-handler';
-import { getUtcDate, isBannedHour, formatDate } from './lib/date';
+import { getUtcDate, isBannedHour, formatDate, isWeekend } from './lib/date';
 import { notifyAirConditionerOnToDiscord } from './lib/discord';
 import { TIME_ZONE, TRIGGERS } from './lib/const';
 import { filterValidTrigger } from './lib/trigger';
