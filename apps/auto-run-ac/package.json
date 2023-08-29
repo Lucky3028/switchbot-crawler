@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "deploy": "wrangler deploy",
-    "dev": "wrangler dev --env development --port 3000",
+    "dev": "wrangler dev --env development --port 3000 --live-reload",
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src",
     "fmt": "prettier --check ./src",

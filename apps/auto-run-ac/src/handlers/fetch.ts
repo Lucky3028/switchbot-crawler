@@ -2,7 +2,11 @@ import { getAssetFromKV } from '@cloudflare/kv-asset-handler';
 import type { AppLoadContext } from '@remix-run/cloudflare';
 import { createRequestHandler } from '@remix-run/cloudflare';
 import { Hono } from 'hono';
+import { logger } from 'hono/logger';
+import { basicAuth } from 'hono/basic-auth';
+import { serveStatic } from 'hono/cloudflare-workers';
 import * as build from 'switchbot-web/build';
+import __STATIC_CONTENT_MANIFEST from '__STATIC_CONTENT_MANIFEST';
 
 const assetManifest = JSON.parse(__STATIC_CONTENT_MANIFEST);
 let handleRemixRequest: ReturnType<typeof createRequestHandler>;
@@ -11,9 +15,13 @@ type ContextEnv = {
   Bindings: Env;
 };
 
-export const app = new Hono<ContextEnv>();
+const api = new Hono<ContextEnv>();
 
-app.get('/api', (c) => c.text(`Hello Cloudflare Workers!${c.env.METER_DEVICE_ID}`));
+export const app = new Hono<ContextEnv>();
+app.use('*', logger());
+app.get('/favicon.ico', serveStatic({ path: './favicon.ico' }));
+app.use('*', (c, next) => basicAuth({ username: c.env.BASIC_AUTH_USER, password: c.env.BASIC_AUTH_PASSWORD })(c, next));
+app.route('/api', api);
 app.get('*', async (context) => {
   try {
     const url = new URL(context.req.url);
