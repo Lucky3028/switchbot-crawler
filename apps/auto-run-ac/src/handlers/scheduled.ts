@@ -5,6 +5,7 @@ import { notifyAirConditionerOnToDiscord } from '@/lib/discord';
 import { filterValidTrigger } from '@/lib/trigger';
 import { isHoliday } from '@holiday-jp/holiday_jp';
 import { utcToZonedTime } from 'date-fns-tz';
+import type { RequiredHandlers } from '@/lib/handler';
 
 /**
  * 与えられた日付において、本プログラムによってエアコンがつけられたかどうかを返す
@@ -14,7 +15,7 @@ import { utcToZonedTime } from 'date-fns-tz';
  */
 const isAlreadyTurnedOnToday = async (date: string, kv: KVNamespace) => kv.get(date).then((v) => !!v);
 
-export const scheduled = async (_event: ScheduledEvent, env: Env, ctx: ExecutionContext): Promise<void> => {
+export const scheduled: RequiredHandlers['scheduled'] = async (_event, env, ctx) => {
   const sentry = initSentry(env.SENTRY_DSN, env.SENTRY_CLIENT_ID, env.SENTRY_CLIENT_SECRET, ctx);
 
   try {

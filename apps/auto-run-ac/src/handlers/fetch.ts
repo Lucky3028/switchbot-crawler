@@ -8,6 +8,7 @@ import { serveStatic } from 'hono/cloudflare-workers';
 import * as build from 'switchbot-web/build';
 import __STATIC_CONTENT_MANIFEST from '__STATIC_CONTENT_MANIFEST';
 import { initSentry, isProduction } from 'shared';
+import type { RequiredHandlers } from '@/lib/handler';
 
 const assetManifest = JSON.parse(__STATIC_CONTENT_MANIFEST);
 let handleRemixRequest: ReturnType<typeof createRequestHandler>;
@@ -18,9 +19,8 @@ type ContextEnv = {
 
 const api = new Hono<ContextEnv>();
 // ヘルスチェック用エンドポイント
-api.get('/', (c) => c.text('Hello!'));
 
-export const app = new Hono<ContextEnv>();
+const app = new Hono<ContextEnv>();
 
 // ミドルウェア
 app.use('*', logger());
@@ -77,3 +77,5 @@ app.get('*', async (ctx) => {
     return new Response('An unexpected error occurred', { status: 500 });
   }
 });
+
+export const fetch: RequiredHandlers['fetch'] = (req) => app.fetch(req);

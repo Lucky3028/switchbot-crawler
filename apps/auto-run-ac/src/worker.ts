@@ -1,9 +1,9 @@
-import { app, scheduled } from './handlers';
+import { fetch, scheduled } from '@/handlers';
+import type { Handlers } from '@/lib/handler';
 
 /**
  * Workerのエントリーポイント
  */
-export default {
-  fetch: app.fetch,
-  scheduled,
-};
+const entryPoint: Handlers = { fetch, scheduled };
+
+export default entryPoint;

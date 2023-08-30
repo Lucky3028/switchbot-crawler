@@ -1,2 +1,2 @@
 export { scheduled } from './scheduled';
-export { app } from './fetch';
+export { fetch } from './fetch';
