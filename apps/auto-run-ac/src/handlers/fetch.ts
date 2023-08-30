@@ -8,7 +8,6 @@ import { serveStatic } from 'hono/cloudflare-workers';
 import * as build from 'switchbot-web/build';
 import __STATIC_CONTENT_MANIFEST from '__STATIC_CONTENT_MANIFEST';
 import { initSentry, isProduction } from 'shared';
-import type { RequiredHandlers } from '@/lib/handler';
 
 const assetManifest = JSON.parse(__STATIC_CONTENT_MANIFEST);
 let handleRemixRequest: ReturnType<typeof createRequestHandler>;
@@ -78,4 +77,4 @@ app.get('*', async (ctx) => {
   }
 });
 
-export const fetch: RequiredHandlers['fetch'] = (req) => app.fetch(req);
+export const { fetch } = app;
