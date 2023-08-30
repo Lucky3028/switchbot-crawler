@@ -1,6 +1,6 @@
 /// <reference types="@cloudflare/workers-types" />
 
-type NodeEnv = 'production' | 'dev';
+type NodeEnv = 'production' | 'development';
 
 type Env = {
   __STATIC_CONTENT: KVNamespace;
