@@ -1,4 +1,4 @@
-import { initSentry, switchbot } from 'shared';
+import { initSentry, isProduction, switchbot } from 'shared';
 import { formatDate, getUtcDate, isBannedHour, isWeekend } from '@/lib/date';
 import { TIME_ZONE, TRIGGERS } from '@/lib/const';
 import { notifyAirConditionerOnToDiscord } from '@/lib/discord';
@@ -38,7 +38,7 @@ export const scheduled = async (_event: ScheduledEvent, env: Env, ctx: Execution
     await env.HISTORY.put(formattedDate, 'done!', { expirationTtl: 60 * 60 * 24 });
     await notifyAirConditionerOnToDiscord(env.NOTIFICATION_WEBHOOK_URL, utcNow, actualTemp);
   } catch (e: unknown) {
-    if (e instanceof Error && env.NODE_ENV === 'production') {
+    if (e instanceof Error && isProduction(env.NODE_ENV)) {
       sentry.captureException(e);
     }
   }
