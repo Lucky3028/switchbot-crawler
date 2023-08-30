@@ -1,5 +1,7 @@
 /// <reference types="@cloudflare/workers-types" />
 
+type NodeEnv = 'production' | 'dev';
+
 type Env = {
   __STATIC_CONTENT: KVNamespace;
 
@@ -12,7 +14,7 @@ type Env = {
   // endregion
 
   // region GitHubの秘密変数に設定があって、GitHubActionsによって注入されている環境変数
-  NODE_ENV: 'production' | 'dev';
+  NODE_ENV: NodeEnv;
   SWITCHBOT_TOKEN: string;
   SWITCHBOT_CLIENT_SECRET: string;
   SENTRY_CLIENT_ID: string;
