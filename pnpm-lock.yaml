@@ -230,6 +230,9 @@ importers:
       base64-arraybuffer:
         specifier: ^1.0.2
         version: 1.0.2
+      cloudflare-env:
+        specifier: 'workspace: *'
+        version: link:../cloudflare-env
       toucan-js:
         specifier: ^3.2.1
         version: 3.2.1

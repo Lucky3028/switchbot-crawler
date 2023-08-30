@@ -3,7 +3,8 @@
   "extends": "tsconfig/base.json",
   "compilerOptions": {
     "target": "ESNext",
-    "lib": ["ESNext"]
+    "lib": ["ESNext"],
+    "types": ["node", "cloudflare-env"]
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "../../apps/auto-run-ac/src/lib/util.ts"]
 }
