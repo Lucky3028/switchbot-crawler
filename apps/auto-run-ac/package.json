@@ -19,7 +19,7 @@
     "eslint": "^8.46.0",
     "eslint-config-custom": "workspace:*",
     "prettier": "^3.0.1",
-    "shared": "workspace: *",
+    "shared": "workspace:*",
     "tsconfig": "workspace:*",
     "typescript": "^5.0.4",
     "typesync": "^0.11.1",
