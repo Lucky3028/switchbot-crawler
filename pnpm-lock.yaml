@@ -127,6 +127,9 @@ importers:
       '@remix-run/react':
         specifier: ^1.19.3
         version: 1.19.3(react-dom@18.2.0)(react@18.2.0)
+      auto-run-ac-api:
+        specifier: workspace:*
+        version: link:../auto-run-ac-api
       cloudflare-env:
         specifier: workspace:*
         version: link:../../packages/cloudflare-env
