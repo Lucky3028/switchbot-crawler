@@ -20,7 +20,5 @@ type Env = {
   SENTRY_CLIENT_ID: string;
   SENTRY_CLIENT_SECRET: string;
   NOTIFICATION_WEBHOOK_URL: string;
-  BASIC_AUTH_USER: string;
-  BASIC_AUTH_PASSWORD: string;
   // endregion
 };
