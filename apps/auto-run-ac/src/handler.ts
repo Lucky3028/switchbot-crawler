@@ -5,7 +5,6 @@ import { notifyAirConditionerOnToDiscord } from '@/lib/discord';
 import { filterValidTrigger } from '@/lib/trigger';
 import { isHoliday } from '@holiday-jp/holiday_jp';
 import { utcToZonedTime } from 'date-fns-tz';
-import type { Handlers } from '@/lib/handler';
 
 /**
  * 与えられた日付において、本プログラムによってエアコンがつけられたかどうかを返す
@@ -14,6 +13,8 @@ import type { Handlers } from '@/lib/handler';
  * @returns 与えられた日付において、本プログラムによってエアコンがつけられたかどうか
  */
 const isAlreadyTurnedOnToday = async (date: string, kv: KVNamespace) => kv.get(date).then((v) => !!v);
+
+export type Handlers = ExportedHandler<Env & { AUTO_RUN_AC_API: Fetcher }>;
 
 export const scheduled: Required<Handlers>['scheduled'] = async (_event, env, ctx) => {
   const sentry = initSentry(env.SENTRY_DSN, env.SENTRY_CLIENT_ID, env.SENTRY_CLIENT_SECRET, ctx);

@@ -2,7 +2,6 @@ name = "auto-run-ac"
 main = "src/worker.ts"
 compatibility_date = "2023-08-01"
 compatibility_flags = ["nodejs_compat"]
-routes = [{ pattern = "air.cap-l.cc", custom_domain = true }]
 # アカウントIDはシークレットな値ではない
 account_id = "fff06038a70892193e0fa1e9e270436a"
 kv_namespaces = [
@@ -30,5 +29,6 @@ SENTRY_DSN = "https://a806b31ea1f54f39ac1f7526d1c20e98@sentry.celesteria.net/2"
 # 15分ごとに実行する
 crons = ["*/15 * * * *"]
 
-[site]
-bucket = "../switchbot-web/public"
+services = [
+  { binding = "AUTO_RUN_AC_API", service = "auto-run-ac-api" }
+]
