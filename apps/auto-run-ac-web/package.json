@@ -1,11 +1,12 @@
 {
-  "name": "switchbot-web",
+  "name": "auto-run-ac-web",
   "private": true,
-  "types": "./build.d.ts",
+  "sideEffects": false,
   "type": "module",
   "scripts": {
     "build": "remix build",
-    "dev": "remix dev --port 3001 --manual -c \"pnpm start\"",
+    "deploy": "wrangler deploy",
+    "dev": "remix dev --manual -c \"npm start\"",
     "start": "wrangler dev ./build/index.js",
     "typecheck": "tsc",
     "postinstall": "typesync || :"
@@ -16,9 +17,11 @@
     "@remix-run/css-bundle": "^1.19.3",
     "@remix-run/react": "^1.19.3",
     "cloudflare-env": "workspace:*",
+    "hono": "^3.5.4",
     "isbot": "^3.6.13",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "shared": "workspace:*"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230814.0",
@@ -30,6 +33,7 @@
     "@types/react-dom": "^18.2.7",
     "eslint": "^8.47.0",
     "eslint-config-custom-react": "workspace:*",
+    "prettier": "^3.0.1",
     "tsconfig": "workspace:*",
     "typescript": "^5.1.6",
     "typesync": "^0.11.1"
