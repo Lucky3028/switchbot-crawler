@@ -14,7 +14,18 @@ import { utcToZonedTime } from 'date-fns-tz';
  */
 const isAlreadyTurnedOnToday = async (date: string, kv: KVNamespace) => kv.get(date).then((v) => !!v);
 
-export type Handlers = ExportedHandler<Env & { AUTO_RUN_AC_API: Fetcher }>;
+type Env = {
+  AUTO_RUN_AC_API: Fetcher;
+
+  HISTORY: KVNamespace;
+
+  METER_DEVICE_ID: string;
+  AIR_CONDITIONER_DEVICE_ID: string;
+  SWITCHBOT_TOKEN: string;
+  SWITCHBOT_CLIENT_SECRET: string;
+  NOTIFICATION_WEBHOOK_URL: string;
+};
+export type Handlers = ExportedHandler<SharedEnv & Env>;
 
 export const scheduled: Required<Handlers>['scheduled'] = async (_event, env, ctx) => {
   const sentry = initSentry(env.SENTRY_DSN, env.SENTRY_CLIENT_ID, env.SENTRY_CLIENT_SECRET, ctx);

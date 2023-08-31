@@ -14,11 +14,8 @@ if (process.env.NODE_ENV === 'development') {
   logDevReady(build);
 }
 
-type ContextEnv = {
-  Bindings: Env & { AUTO_RUN_AC_API: Fetcher };
-};
-
-const app = new Hono<ContextEnv>();
+type Env = { AUTO_RUN_AC_API: Fetcher };
+const app = new Hono<{ Bindings: SharedEnv & Env }>();
 
 app.get('*', async (ctx) => {
   const sentry = initSentry(ctx.env.SENTRY_DSN, ctx.env.SENTRY_CLIENT_ID, ctx.env.SENTRY_CLIENT_SECRET, ctx.executionCtx);

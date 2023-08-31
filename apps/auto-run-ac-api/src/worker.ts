@@ -1,6 +1,6 @@
 import { Hono } from 'hono';
 
-const app = new Hono().basePath('/api');
+const app = new Hono<{ Bindings: SharedEnv }>().basePath('/api');
 
 const route = app.get('/', (c) => c.text('Hello Hono!'));
 
