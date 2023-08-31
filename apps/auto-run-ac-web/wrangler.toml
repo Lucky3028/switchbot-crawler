@@ -5,6 +5,9 @@ compatibility_flags = ["nodejs_compat"]
 routes = [{ pattern = "air.cap-l.cc", custom_domain = true }]
 # アカウントIDはシークレットな値ではない
 account_id = "fff06038a70892193e0fa1e9e270436a"
+services = [
+  { binding = "AUTO_RUN_AC_API", service = "auto-run-ac-api" }
+]
 
 [vars]
 NODE_ENV = "production"
@@ -15,7 +18,3 @@ bucket = "./public"
 
 [build]
 command = "pnpm build"
-
-services = [
-  { binding = "AUTO_RUN_AC_API", service = "auto-run-ac-api" }
-]

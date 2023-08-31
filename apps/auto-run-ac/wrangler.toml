@@ -7,6 +7,9 @@ account_id = "fff06038a70892193e0fa1e9e270436a"
 kv_namespaces = [
   { binding = "HISTORY", id = "2622aa221d65472ca1b9595c31a388cf", preview_id = "d39881391df24b1891c808b74d9b4937" }
 ]
+services = [
+  { binding = "AUTO_RUN_AC_API", service = "auto-run-ac-api" }
+]
 
 [vars]
 NODE_ENV = "production"
@@ -18,6 +21,9 @@ SENTRY_DSN = "https://a806b31ea1f54f39ac1f7526d1c20e98@sentry.celesteria.net/2"
 kv_namespaces = [
   { binding = "HISTORY", id = "2622aa221d65472ca1b9595c31a388cf", preview_id = "d39881391df24b1891c808b74d9b4937" },
 ]
+services = [
+  { binding = "AUTO_RUN_AC_API", service = "auto-run-ac-api" }
+]
 
 [env.development.vars]
 NODE_ENV = "development"
@@ -28,7 +34,3 @@ SENTRY_DSN = "https://a806b31ea1f54f39ac1f7526d1c20e98@sentry.celesteria.net/2"
 [triggers]
 # 15分ごとに実行する
 crons = ["*/15 * * * *"]
-
-services = [
-  { binding = "AUTO_RUN_AC_API", service = "auto-run-ac-api" }
-]
