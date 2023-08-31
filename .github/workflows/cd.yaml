@@ -12,7 +12,10 @@ jobs:
     timeout-minutes: 5
     strategy:
       matrix:
-        app: ["auto-run-ac"]
+        app:
+          - auto-run-ac
+          - auto-run-ac-api
+          - auto-run-ac-web
     needs:
       - ci
     steps:
