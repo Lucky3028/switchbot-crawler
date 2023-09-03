@@ -87,12 +87,18 @@ importers:
 
   apps/auto-run-ac-api:
     dependencies:
+      '@hono/zod-validator':
+        specifier: ^0.1.8
+        version: 0.1.8(hono@3.5.4)(zod@3.22.1)
       cloudflare-env:
         specifier: workspace:*
         version: link:../../packages/cloudflare-env
       hono:
         specifier: ^3.5.4
         version: 3.5.4
+      zod:
+        specifier: ^3.22.1
+        version: 3.22.1
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20230419.0
@@ -2345,6 +2351,16 @@ packages:
 
   /@holiday-jp/holiday_jp@2.4.0:
     resolution: {integrity: sha512-YcLZJMTwadSoxR8sduIGWpX9sAhjoVR8hc2PnJZPxTOlT73ZXPlTu1TPQ0JZqM7+7MPGILZRuPimBDiC/aAhgw==}
+    dev: false
+
+  /@hono/zod-validator@0.1.8(hono@3.5.4)(zod@3.22.1):
+    resolution: {integrity: sha512-/Kd/p/dUVKM7/1TY3jafTV+ngwEh3fOLmXCJQKb9esWsCom5WOJaNmZYv8jeRhyipu1xBvmN5jceRA3Ev3rmQw==}
+    peerDependencies:
+      hono: 3.*
+      zod: ^3.19.1
+    dependencies:
+      hono: 3.5.4
+      zod: 3.22.1
     dev: false
 
   /@humanwhocodes/config-array@0.11.10:
