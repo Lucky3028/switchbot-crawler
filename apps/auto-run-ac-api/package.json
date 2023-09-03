@@ -5,7 +5,11 @@
   "main": "src/worker.ts",
   "scripts": {
     "deploy": "wrangler deploy",
-    "start": "wrangler dev"
+    "start": "wrangler dev",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint --fix ./src",
+    "fmt": "prettier --check ./src",
+    "fmt:fix": "prettier --write ./src"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230419.0",
