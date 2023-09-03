@@ -4,8 +4,8 @@
   "license": "MIT",
   "types": "index.ts",
   "scripts": {
-    "lint": "eslint index.d.ts",
-    "lint:fix": "eslint --fix index.d.ts"
+    "lint": "eslint index.ts",
+    "lint:fix": "eslint --fix index.ts"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230807.0",

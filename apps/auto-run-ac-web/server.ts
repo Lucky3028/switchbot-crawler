@@ -4,6 +4,7 @@ import { createRequestHandler, logDevReady } from '@remix-run/cloudflare';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as build from '@remix-run/dev/server-build';
 import __STATIC_CONTENT_MANIFEST from '__STATIC_CONTENT_MANIFEST';
+import type { SharedEnv } from 'cloudflare-env';
 import { Hono } from 'hono';
 import { initSentry, isProduction } from 'shared';
 

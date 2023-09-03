@@ -5,6 +5,7 @@ import { notifyAirConditionerOnToDiscord } from '@/lib/discord';
 import { filterValidTrigger } from '@/lib/trigger';
 import { isHoliday } from '@holiday-jp/holiday_jp';
 import { utcToZonedTime } from 'date-fns-tz';
+import type { SharedEnv } from 'cloudflare-env';
 
 /**
  * 与えられた日付において、本プログラムによってエアコンがつけられたかどうかを返す

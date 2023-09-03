@@ -1,8 +1,6 @@
-/// <reference types="@cloudflare/workers-types" />
+export type NodeEnv = 'production' | 'development';
 
-type NodeEnv = 'production' | 'development';
-
-type SharedEnv = {
+export type SharedEnv = {
   __STATIC_CONTENT: KVNamespace;
 
   // region wrangler.tomlに直接書き込まれている環境変数

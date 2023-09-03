@@ -4,7 +4,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["ESNext"],
-    "types": ["node", "cloudflare-env"]
+    "types": ["node"]
   },
   "include": ["**/*.ts", "../../apps/auto-run-ac/src/lib/util.ts"]
 }

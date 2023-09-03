@@ -1,3 +1,4 @@
+import type { SharedEnv } from 'cloudflare-env';
 import { Hono } from 'hono';
 
 const app = new Hono<{ Bindings: SharedEnv }>().basePath('/api');
