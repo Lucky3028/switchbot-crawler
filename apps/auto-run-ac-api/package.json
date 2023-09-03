@@ -5,7 +5,7 @@
   "main": "src/worker.ts",
   "scripts": {
     "deploy": "wrangler deploy",
-    "start": "wrangler dev",
+    "dev": "wrangler dev",
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src",
     "fmt": "prettier --check ./src",
