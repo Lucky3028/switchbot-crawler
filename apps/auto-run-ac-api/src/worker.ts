@@ -17,8 +17,8 @@ const route = app
       return c.jsonT({ success: true, data: { counts: 0, triggers: [] } });
     }
 
-    const parsed = defaultTriggersSchema.parse(values);
-    const response = { ...parsed, counts: parsed.triggers.length };
+    const triggers = defaultTriggersSchema.parse(values);
+    const response = { triggers, counts: triggers.length };
 
     return c.jsonT({ success: true, data: response });
   })

@@ -28,6 +28,4 @@ const triggerSchema = z.object({
   ac: acSettingsSchema,
 });
 
-export const defaultTriggersSchema = z.object({
-  triggers: z.array(triggerSchema),
-});
+export const defaultTriggersSchema = z.array(triggerSchema);
