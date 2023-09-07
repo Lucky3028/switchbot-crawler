@@ -27,7 +27,7 @@ const route = app
     // eslint-disable-next-line consistent-return
     zValidator('json', defaultTriggersSchema, (result, c) => {
       if (c.req.headers.get('Content-Type') !== 'application/json') {
-        return c.jsonT({ success: false, messages: ['Content-Type must be "application/json"'] }, 400);
+        return c.jsonT({ success: false, messages: ['Content-Type must be "application/json"'] }, 415);
       }
       if (!result.success) {
         return c.jsonT({ success: false, messages: result.error.issues.map((i) => i.message) }, 400);
@@ -38,7 +38,7 @@ const route = app
 
       c.executionCtx.waitUntil(c.env.TRIGGERS.put('defaultTriggers', JSON.stringify(contents)));
 
-      return c.jsonT({ success: true, data: {} }, 200);
+      return c.body(null, 204);
     },
   );
 
