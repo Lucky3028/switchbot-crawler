@@ -1,7 +1,7 @@
 import type { SharedEnv } from 'cloudflare-env';
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
-import { defaultTriggersSchema } from './model';
+import { triggersSchema } from './model';
 
 type Env = {
   TRIGGERS: KVNamespace;
@@ -17,7 +17,7 @@ const route = app
       return c.jsonT({ success: true, data: { counts: 0, triggers: [] } });
     }
 
-    const triggers = defaultTriggersSchema.parse(values);
+    const triggers = triggersSchema.parse(values);
     const response = { triggers, counts: triggers.length };
 
     return c.jsonT({ success: true, data: response });
@@ -25,7 +25,7 @@ const route = app
   .put(
     // @ts-ignore TS7030
     // eslint-disable-next-line consistent-return
-    zValidator('json', defaultTriggersSchema, (result, c) => {
+    zValidator('json', triggersSchema, (result, c) => {
       if (c.req.headers.get('Content-Type') !== 'application/json') {
         return c.jsonT({ success: false, messages: ['Content-Type must be "application/json"'] }, 415);
       }

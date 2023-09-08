@@ -19,7 +19,7 @@ const acSettingsSchema = z.object({
     .max(30, { message: 'Hour must be equal or less than 30' }),
 });
 
-export const triggerSchema = z.object({
+const triggerSchema = z.object({
   time: timeSchema,
   temp: z
     .number({ invalid_type_error: 'Temp must be integer value' })
@@ -29,7 +29,7 @@ export const triggerSchema = z.object({
   ac: acSettingsSchema,
 });
 
-export const defaultTriggersSchema = z.array(triggerSchema);
+export const triggersSchema = z.array(triggerSchema);
 
 export const dateSchema = z.object({
   year: z
