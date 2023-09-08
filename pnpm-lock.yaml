@@ -106,6 +106,9 @@ importers:
       eslint:
         specifier: ^8.48.0
         version: 8.48.0
+      eslint-config-custom:
+        specifier: workspace:*
+        version: link:../../packages/eslint-config-custom
       prettier:
         specifier: ^3.0.1
         version: 3.0.1
