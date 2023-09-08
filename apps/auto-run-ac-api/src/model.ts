@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { parseDecimalInt } from './lib';
 
 const timeSchema = z.object({
   hour: z
@@ -18,7 +19,7 @@ const acSettingsSchema = z.object({
     .max(30, { message: 'Hour must be equal or less than 30' }),
 });
 
-const triggerSchema = z.object({
+export const triggerSchema = z.object({
   time: timeSchema,
   temp: z
     .number({ invalid_type_error: 'Temp must be integer value' })
@@ -29,3 +30,21 @@ const triggerSchema = z.object({
 });
 
 export const defaultTriggersSchema = z.array(triggerSchema);
+
+export const dateSchema = z.object({
+  year: z
+    .string()
+    .transform(parseDecimalInt)
+    .refine((v) => Number.isInteger(v), { message: 'Year must be an integer' })
+    .refine((n) => n >= 2000, { message: 'Year must be equal or greater than 2000' }),
+  month: z
+    .string()
+    .transform(parseDecimalInt)
+    .refine((v) => Number.isInteger(v), { message: 'Month must be an integer' })
+    .refine((n) => n >= 1 && n <= 12, { message: 'Month must be between 1 and 12' }),
+  day: z
+    .string()
+    .transform(parseDecimalInt)
+    .refine((v) => Number.isInteger(v), { message: 'Day must be an integer' })
+    .refine((n) => n >= 1 && n <= 31, { message: 'Month must be between 1 and 31' }),
+});
