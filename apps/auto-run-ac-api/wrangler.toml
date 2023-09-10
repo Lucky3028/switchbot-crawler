@@ -4,3 +4,10 @@ compatibility_date = "2023-08-21"
 kv_namespaces = [
   { binding = "TRIGGERS", id = "fd2cd984832d4e9c91fee320b9993f2e", preview_id = "b81d3e714b3d4d43bd642b55e22a477b" }
 ]
+
+# TODO: fix binding name
+[[d1_databases]]
+binding = "triggers" # i.e. available in your Worker on env.DB
+database_name = "triggers"
+database_id = "27e105c8-8221-45da-8ffb-4bb0f227ea89"
+migrations_dir = "src/db/migrations"
