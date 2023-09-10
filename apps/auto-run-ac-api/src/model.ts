@@ -11,7 +11,7 @@ const timeSchema = z.object({
 });
 
 const acSettingsSchema = z.object({
-  mode: z.enum(['HOT', 'COOL'], { invalid_type_error: "DriveMode must be 'HOT' or 'COOL'." }),
+  mode: z.enum(['HOT', 'COOL'], { invalid_type_error: "Operation mode must be 'HOT' or 'COOL'." }),
   temp: z
     .number({ invalid_type_error: 'Temp must be integer value' })
     .int({ message: 'Temp must be integer value' })
