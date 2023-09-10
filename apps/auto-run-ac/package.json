@@ -35,5 +35,9 @@
     "cloudflare-env": "workspace:*",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0"
+  },
+  "volta": {
+    "node": "18.17.1",
+    "pnpm": "8.7.4"
   }
 }
