@@ -27,7 +27,7 @@ const route = app
     // @ts-ignore TS7030
     // eslint-disable-next-line consistent-return
     zValidator('json', triggersSchema, (result, c) => {
-      if (c.req.headers.get('Content-Type') !== 'application/json') {
+      if (c.req.raw.headers.get('Content-Type') !== 'application/json') {
         return c.jsonT({ success: false, messages: ['Content-Type must be "application/json"'] }, 415);
       }
       if (!result.success) {
@@ -89,7 +89,7 @@ const route = app
     // @ts-ignore TS7030
     // eslint-disable-next-line consistent-return
     zValidator('json', triggersSchema, (result, c) => {
-      if (c.req.headers.get('Content-Type') !== 'application/json') {
+      if (c.req.raw.headers.get('Content-Type') !== 'application/json') {
         return c.jsonT({ success: false, messages: ['Content-Type must be "application/json"'] }, 415);
       }
       if (!result.success) {
