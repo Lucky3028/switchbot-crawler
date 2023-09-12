@@ -30,7 +30,7 @@
     "@hono/zod-validator": "^0.1.8",
     "cloudflare-env": "workspace:*",
     "drizzle-orm": "^0.28.6",
-    "hono": "^3.5.4",
+    "hono": "^3.6.0",
     "nanoid": "^4.0.2",
     "zod": "^3.22.1"
   },
