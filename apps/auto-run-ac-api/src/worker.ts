@@ -5,6 +5,7 @@ import { dateSchema, triggersSchema } from './model';
 
 type Env = {
   TRIGGERS: KVNamespace;
+  triggers: D1Database;
 };
 
 const app = new Hono<{ Bindings: SharedEnv & Env }>().basePath('/api');
