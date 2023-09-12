@@ -20,6 +20,7 @@ const acSettingsSchema = z.object({
 });
 
 const triggerSchema = z.object({
+  id: z.string().nonempty({ message: "Trigger's ID must be nonempty" }),
   time: timeSchema,
   temp: z
     .number({ invalid_type_error: 'Temp must be integer value' })
