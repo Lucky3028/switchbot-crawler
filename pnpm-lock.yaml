@@ -87,6 +87,9 @@ importers:
 
   apps/auto-run-ac-api:
     dependencies:
+      '@hono/zod-openapi':
+        specifier: ^0.4.0
+        version: 0.4.0(hono@3.6.0)(zod@3.22.1)
       '@hono/zod-validator':
         specifier: ^0.1.8
         version: 0.1.8(hono@3.6.0)(zod@3.22.1)
@@ -345,6 +348,15 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.19
     dev: true
+
+  /@asteasolutions/zod-to-openapi@5.5.0(zod@3.22.1):
+    resolution: {integrity: sha512-d5HwrvM6dOKr3XdeF+DmashGvfEc+1oiEfbscugsiwSTrFtuMa7ETpW9sTNnVgn+hJaz+PRxPQUYD7q9/5dUig==}
+    peerDependencies:
+      zod: ^3.20.2
+    dependencies:
+      openapi3-ts: 4.1.2
+      zod: 3.22.1
+    dev: false
 
   /@babel/code-frame@7.22.10:
     resolution: {integrity: sha512-/KKIMG4UEL35WmI9OlvMhurwtytjvXoFcGNrOvyG9zIzA8YmPjVtIZUf7b05+TPO7G7/GEmLHDaoCgACHl9hhA==}
@@ -2409,6 +2421,19 @@ packages:
 
   /@holiday-jp/holiday_jp@2.4.0:
     resolution: {integrity: sha512-YcLZJMTwadSoxR8sduIGWpX9sAhjoVR8hc2PnJZPxTOlT73ZXPlTu1TPQ0JZqM7+7MPGILZRuPimBDiC/aAhgw==}
+    dev: false
+
+  /@hono/zod-openapi@0.4.0(hono@3.6.0)(zod@3.22.1):
+    resolution: {integrity: sha512-tyHXZMnfDAojLYeW+QxTaBGGkc/XaUvvfrJzuSPcCSu8LA+AjneGzzNYUKKB/rrJnrfBb+MkZYXlhb5/lmYxjQ==}
+    engines: {node: '>=16.0.0'}
+    peerDependencies:
+      hono: '*'
+      zod: 3.*
+    dependencies:
+      '@asteasolutions/zod-to-openapi': 5.5.0(zod@3.22.1)
+      '@hono/zod-validator': 0.1.8(hono@3.6.0)(zod@3.22.1)
+      hono: 3.6.0
+      zod: 3.22.1
     dev: false
 
   /@hono/zod-validator@0.1.8(hono@3.6.0)(zod@3.22.1):
@@ -8120,6 +8145,12 @@ packages:
       mimic-fn: 2.1.0
     dev: true
 
+  /openapi3-ts@4.1.2:
+    resolution: {integrity: sha512-B7gOkwsYMZO7BZXwJzXCuVagym2xhqsrilVvV0dnq2Di4+iLUXKVX9gOK23ZqaAHZOwABXN0QTdW8QnkUTX6DA==}
+    dependencies:
+      yaml: 2.3.1
+    dev: false
+
   /optionator@0.9.3:
     resolution: {integrity: sha512-JjCoypp+jKn1ttEFExxhetCKeJt9zhAgAve5FXHixTvFDW/5aEktX9bufBKLRRMdU7bNtpLfcGu94B3cdEJgjg==}
     engines: {node: '>= 0.8.0'}
@@ -10454,7 +10485,6 @@ packages:
   /yaml@2.3.1:
     resolution: {integrity: sha512-2eHWfjaoXgTBC2jNM1LRef62VQa0umtvRiDSk6HSzW7RvS5YtkabJrwYLLEKWBc8a5U2PTSCs+dJjUTJdlHsWQ==}
     engines: {node: '>= 14'}
-    dev: true
 
   /yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
