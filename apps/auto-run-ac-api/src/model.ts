@@ -1,6 +1,11 @@
 import { z } from 'zod';
 import { parseDecimalInt } from './lib';
 
+export type Env = {
+  TRIGGERS: KVNamespace;
+  triggers: D1Database;
+};
+
 const timeSchema = z.object({
   hour: z
     .number({ invalid_type_error: 'Hour must be integer value' })
