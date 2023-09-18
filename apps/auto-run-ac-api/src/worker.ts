@@ -1,10 +1,7 @@
-import type { SharedEnv } from 'cloudflare-env';
 import { OpenAPIHono } from '@hono/zod-openapi';
-import type { Env } from './model';
-import { defaultTriggersApi } from './api/defaultTriggers';
-import { triggersApi } from './api/triggersApi';
+import { defaultTriggersApi, triggersApi } from './api';
 
-const app = new OpenAPIHono<{ Bindings: SharedEnv & Env }>();
+const app = new OpenAPIHono();
 
 app.doc('/doc', {
   openapi: '3.1.0',
