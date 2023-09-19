@@ -1,5 +1,5 @@
 import { defaultTriggersSchema, type Env } from '@/model';
-import { OpenAPIHono } from '@hono/zod-openapi';
+import { createRoute, OpenAPIHono } from '@hono/zod-openapi';
 import type { SharedEnv } from 'cloudflare-env';
 import { zValidator } from '@hono/zod-validator';
 import type { DrizzleD1Database } from 'drizzle-orm/d1';
@@ -18,17 +18,39 @@ app.use('*', async (c, next) => {
 });
 
 export const defaultTriggersApi = app
-  .get('/', async (c) => {
-    const values = await c.get('db').select().from(table);
-    const triggers = values.map(({ triggerTime, triggerTemp, operationMode, settingsTemp }) => ({
-      temp: triggerTemp,
-      ac: { mode: operationMode, temp: settingsTemp },
-      time: { hour: triggerTime.getUTCHours(), minute: triggerTime.getUTCMinutes() },
-    }));
-    const response = { triggers, counts: triggers.length };
+  .openapi(
+    createRoute({
+      responses: {
+        200: {
+          description: '',
+          content: {
+            'application/json': {
+              schema: z.object({
+                success: z.boolean(),
+                data: z.object({
+                  counts: z.number().int().nonnegative(),
+                  triggers: defaultTriggersSchema,
+                }),
+              }),
+            },
+          },
+        },
+      },
+      method: 'get',
+      path: '/',
+    }),
+    async (c) => {
+      const values = await c.get('db').select().from(table);
+      const triggers = values.map(({ triggerTime, triggerTemp, operationMode, settingsTemp }) => ({
+        temp: triggerTemp,
+        ac: { mode: operationMode, temp: settingsTemp },
+        time: { hour: triggerTime.getUTCHours(), minute: triggerTime.getUTCMinutes() },
+      }));
+      const response = { triggers, counts: triggers.length };
 
-    return c.jsonT({ success: true, data: response });
-  })
+      return c.jsonT({ success: true, data: response });
+    },
+  )
   .put(
     '/',
     // @ts-ignore TS7030
