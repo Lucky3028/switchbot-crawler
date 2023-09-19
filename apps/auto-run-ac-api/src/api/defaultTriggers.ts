@@ -1,18 +1,30 @@
-import { triggersSchema, type Env } from '@/model';
+import { defaultTriggersSchema, type Env } from '@/model';
 import { OpenAPIHono } from '@hono/zod-openapi';
 import type { SharedEnv } from 'cloudflare-env';
 import { zValidator } from '@hono/zod-validator';
+import type { DrizzleD1Database } from 'drizzle-orm/d1';
+import { drizzle } from 'drizzle-orm/d1';
+import { defaultTriggersTable as table } from '@/db/schema';
+import { createInsertSchema } from 'drizzle-zod';
+import { z } from 'zod';
 
-const app = new OpenAPIHono<{ Bindings: SharedEnv & Env }>();
+type Variables = { db: DrizzleD1Database };
+
+const app = new OpenAPIHono<{ Bindings: SharedEnv & Env; Variables: Variables }>();
+
+app.use('*', async (c, next) => {
+  c.set('db', drizzle(c.env.triggers));
+  await next();
+});
 
 export const defaultTriggersApi = app
   .get('/', async (c) => {
-    const values = await c.env.TRIGGERS.get('defaultTriggers', { type: 'json' });
-    if (!values) {
-      return c.jsonT({ success: true, data: { counts: 0, triggers: [] } });
-    }
-
-    const triggers = triggersSchema.parse(values);
+    const values = await c.get('db').select().from(table);
+    const triggers = values.map(({ triggerTime, triggerTemp, operationMode, settingsTemp }) => ({
+      temp: triggerTemp,
+      ac: { mode: operationMode, temp: settingsTemp },
+      time: { hour: triggerTime.getUTCHours(), minute: triggerTime.getUTCMinutes() },
+    }));
     const response = { triggers, counts: triggers.length };
 
     return c.jsonT({ success: true, data: response });
@@ -21,7 +33,7 @@ export const defaultTriggersApi = app
     '/',
     // @ts-ignore TS7030
     // eslint-disable-next-line consistent-return
-    zValidator('json', triggersSchema, (result, c) => {
+    zValidator('json', defaultTriggersSchema, (result, c) => {
       if (c.req.raw.headers.get('Content-Type') !== 'application/json') {
         return c.jsonT({ success: false, messages: ['Content-Type must be "application/json"'] }, 415);
       }
@@ -30,9 +42,18 @@ export const defaultTriggersApi = app
       }
     }),
     async (c) => {
+      const insertSchema = z.array(createInsertSchema(table));
+      type InsertValues = z.infer<typeof insertSchema>;
       const contents = c.req.valid('json');
+      const values: InsertValues = contents.map((v) => ({
+        triggerTemp: v.temp,
+        triggerTime: new Date(2000, 4, 15, v.time.hour, v.time.minute),
+        settingsTemp: v.ac.temp,
+        operationMode: v.ac.mode,
+      }));
 
-      c.executionCtx.waitUntil(c.env.TRIGGERS.put('defaultTriggers', JSON.stringify(contents)));
+      await c.get('db').delete(table);
+      await c.get('db').insert(table).values(values);
 
       return c.body(null, 204);
     },

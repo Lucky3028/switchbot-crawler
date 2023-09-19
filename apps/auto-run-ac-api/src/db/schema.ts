@@ -8,7 +8,6 @@ const settingsTempColumn = integer('settings_temp').notNull();
 export const defaultTriggersTable = sqliteTable(
   'default_triggers',
   {
-    id: text('id').primaryKey(),
     triggerTime: integer('trigger_time', { mode: 'timestamp' }).notNull(),
     triggerTemp: tempColumn,
     operationMode: operationModeColumn,

@@ -37,6 +37,10 @@ const triggerSchema = z.object({
 
 export const triggersSchema = z.array(triggerSchema);
 
+const defaultTriggerSchema = triggerSchema.omit({ id: true });
+
+export const defaultTriggersSchema = z.array(defaultTriggerSchema);
+
 export const dateSchema = z.object({
   year: z
     .string()
