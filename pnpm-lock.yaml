@@ -99,6 +99,9 @@ importers:
       drizzle-orm:
         specifier: ^0.28.6
         version: 0.28.6(@cloudflare/workers-types@4.20230821.0)(better-sqlite3@8.6.0)
+      drizzle-zod:
+        specifier: ^0.5.1
+        version: 0.5.1(drizzle-orm@0.28.6)(zod@3.22.1)
       hono:
         specifier: ^3.6.0
         version: 3.6.0
@@ -4701,6 +4704,16 @@ packages:
     dependencies:
       '@cloudflare/workers-types': 4.20230821.0
       better-sqlite3: 8.6.0
+    dev: false
+
+  /drizzle-zod@0.5.1(drizzle-orm@0.28.6)(zod@3.22.1):
+    resolution: {integrity: sha512-C/8bvzUH/zSnVfwdSibOgFjLhtDtbKYmkbPbUCq46QZyZCH6kODIMSOgZ8R7rVjoI+tCj3k06MRJMDqsIeoS4A==}
+    peerDependencies:
+      drizzle-orm: '>=0.23.13'
+      zod: '*'
+    dependencies:
+      drizzle-orm: 0.28.6(@cloudflare/workers-types@4.20230821.0)(better-sqlite3@8.6.0)
+      zod: 3.22.1
     dev: false
 
   /duplexify@3.7.1:

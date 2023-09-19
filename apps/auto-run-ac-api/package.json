@@ -5,7 +5,7 @@
   "main": "src/worker.ts",
   "scripts": {
     "deploy": "wrangler deploy",
-    "dev": "wrangler dev",
+    "dev": "TZ=UTC wrangler dev",
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src",
     "fmt": "prettier --check ./src",
@@ -31,6 +31,7 @@
     "@hono/zod-validator": "^0.1.8",
     "cloudflare-env": "workspace:*",
     "drizzle-orm": "^0.28.6",
+    "drizzle-zod": "^0.5.1",
     "hono": "^3.6.0",
     "nanoid": "^4.0.2",
     "zod": "^3.22.1"
