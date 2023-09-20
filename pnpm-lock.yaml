@@ -98,7 +98,7 @@ importers:
         version: link:../../packages/cloudflare-env
       drizzle-orm:
         specifier: ^0.28.6
-        version: 0.28.6(@cloudflare/workers-types@4.20230821.0)(better-sqlite3@8.6.0)
+        version: 0.28.6(@cloudflare/workers-types@4.20230821.0)(@types/better-sqlite3@7.6.5)(better-sqlite3@8.6.0)
       drizzle-zod:
         specifier: ^0.5.1
         version: 0.5.1(drizzle-orm@0.28.6)(zod@3.22.1)
@@ -108,6 +108,9 @@ importers:
       nanoid:
         specifier: ^4.0.2
         version: 4.0.2
+      nanoid-dictionary:
+        specifier: ^4.3.0
+        version: 4.3.0
       zod:
         specifier: ^3.22.1
         version: 3.22.1
@@ -115,6 +118,15 @@ importers:
       '@cloudflare/workers-types':
         specifier: ^4.20230419.0
         version: 4.20230821.0
+      '@types/better-sqlite3':
+        specifier: ^7.6.5
+        version: 7.6.5
+      '@types/eslint':
+        specifier: ^8.44.2
+        version: 8.44.2
+      '@types/nanoid-dictionary':
+        specifier: ^4.2.0
+        version: 4.2.0
       better-sqlite3:
         specifier: ^8.6.0
         version: 8.6.0
@@ -2872,6 +2884,11 @@ packages:
     resolution: {integrity: sha512-XTIieEY+gvJ39ChLcB4If5zHtPxt3Syj5rgZR+e1ctpmK8NjPf0zFqsz4JpLJT0xla9GFDKjy8Cpu331nrmE1Q==}
     dev: true
 
+  /@types/better-sqlite3@7.6.5:
+    resolution: {integrity: sha512-H3ZUx89KiPhYa9nalUXVVStSUFHuzYxt4yoazufpTTYW9rVUCzhh02V8CH2C8nE4libnK0UgFq5DFIe0DOhqow==}
+    dependencies:
+      '@types/node': 18.16.0
+
   /@types/cacheable-request@6.0.3:
     resolution: {integrity: sha512-IQ3EbTzGxIigb1I3qPZc1rWJnH0BmSKv5QYTalEwweFvyBDLSAe24zP0le/hyi7ecGfZVlIVAg4BZqb8WBwKqw==}
     dependencies:
@@ -2974,9 +2991,12 @@ packages:
     resolution: {integrity: sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==}
     dev: true
 
+  /@types/nanoid-dictionary@4.2.0:
+    resolution: {integrity: sha512-DyQddKC2AYsInXBMqKSwhom4gpouV8SF1smsCPSzR8hp20vZJ5o5Yxg7qXThCHwr/H6VMq01UArEGbF0q2FXig==}
+    dev: true
+
   /@types/node@18.16.0:
     resolution: {integrity: sha512-BsAaKhB+7X+H4GnSjGhJG9Qi8Tw+inU9nJDwmD5CgOmBLEI6ArdhikpLX7DjbjDRDTbqZzU2LSQNZg8WGPiSZQ==}
-    dev: true
 
   /@types/prop-types@15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
@@ -4640,7 +4660,7 @@ packages:
       - supports-color
     dev: true
 
-  /drizzle-orm@0.28.6(@cloudflare/workers-types@4.20230821.0)(better-sqlite3@8.6.0):
+  /drizzle-orm@0.28.6(@cloudflare/workers-types@4.20230821.0)(@types/better-sqlite3@7.6.5)(better-sqlite3@8.6.0):
     resolution: {integrity: sha512-yBe+F9htrlYER7uXgDJUQsTHFoIrI5yMm5A0bg0GiZ/kY5jNXTWoEy4KQtg35cE27sw1VbgzoMWHAgCckUUUww==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
@@ -4703,6 +4723,7 @@ packages:
         optional: true
     dependencies:
       '@cloudflare/workers-types': 4.20230821.0
+      '@types/better-sqlite3': 7.6.5
       better-sqlite3: 8.6.0
     dev: false
 
@@ -4712,7 +4733,7 @@ packages:
       drizzle-orm: '>=0.23.13'
       zod: '*'
     dependencies:
-      drizzle-orm: 0.28.6(@cloudflare/workers-types@4.20230821.0)(better-sqlite3@8.6.0)
+      drizzle-orm: 0.28.6(@cloudflare/workers-types@4.20230821.0)(@types/better-sqlite3@7.6.5)(better-sqlite3@8.6.0)
       zod: 3.22.1
     dev: false
 
@@ -7926,6 +7947,10 @@ packages:
   /mute-stream@0.0.8:
     resolution: {integrity: sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==}
     dev: true
+
+  /nanoid-dictionary@4.3.0:
+    resolution: {integrity: sha512-Xw1+/QnRGWO1KJ0rLfU1xR85qXmAHyLbE3TUkklu9gOIDburP6CsUnLmTaNECGpBh5SHb2uPFmx0VT8UPyoeyw==}
+    dev: false
 
   /nanoid@3.3.6:
     resolution: {integrity: sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==}

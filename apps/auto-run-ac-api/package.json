@@ -16,6 +16,9 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230419.0",
+    "@types/better-sqlite3": "^7.6.5",
+    "@types/eslint": "^8.44.2",
+    "@types/nanoid-dictionary": "^4.2.0",
     "better-sqlite3": "^8.6.0",
     "drizzle-kit": "^0.19.13",
     "eslint": "^8.48.0",
@@ -34,6 +37,7 @@
     "drizzle-zod": "^0.5.1",
     "hono": "^3.6.0",
     "nanoid": "^4.0.2",
+    "nanoid-dictionary": "^4.3.0",
     "zod": "^3.22.1"
   },
   "volta": {
