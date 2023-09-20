@@ -9,6 +9,24 @@ export type Env = {
 
 export type Variables = { db: DrizzleD1Database };
 
+export const dateSchema = z.object({
+  year: z
+    .string()
+    .transform(parseDecimalInt)
+    .refine((v) => Number.isInteger(v), { message: 'Year must be an integer' })
+    .refine((n) => n >= 2000, { message: 'Year must be equal or greater than 2000' }),
+  month: z
+    .string()
+    .transform(parseDecimalInt)
+    .refine((v) => Number.isInteger(v), { message: 'Month must be an integer' })
+    .refine((n) => n >= 1 && n <= 12, { message: 'Month must be between 1 and 12' }),
+  day: z
+    .string()
+    .transform(parseDecimalInt)
+    .refine((v) => Number.isInteger(v), { message: 'Day must be an integer' })
+    .refine((n) => n >= 1 && n <= 31, { message: 'Month must be between 1 and 31' }),
+});
+
 const timeSchema = z.object({
   hour: z
     .number({ invalid_type_error: 'Hour must be integer value' })
@@ -43,21 +61,3 @@ export const triggersSchema = z.array(triggerSchema);
 const defaultTriggerSchema = triggerSchema.omit({ id: true });
 
 export const defaultTriggersSchema = z.array(defaultTriggerSchema);
-
-export const dateSchema = z.object({
-  year: z
-    .string()
-    .transform(parseDecimalInt)
-    .refine((v) => Number.isInteger(v), { message: 'Year must be an integer' })
-    .refine((n) => n >= 2000, { message: 'Year must be equal or greater than 2000' }),
-  month: z
-    .string()
-    .transform(parseDecimalInt)
-    .refine((v) => Number.isInteger(v), { message: 'Month must be an integer' })
-    .refine((n) => n >= 1 && n <= 12, { message: 'Month must be between 1 and 12' }),
-  day: z
-    .string()
-    .transform(parseDecimalInt)
-    .refine((v) => Number.isInteger(v), { message: 'Day must be an integer' })
-    .refine((n) => n >= 1 && n <= 31, { message: 'Month must be between 1 and 31' }),
-});
