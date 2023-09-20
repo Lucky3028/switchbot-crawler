@@ -21,7 +21,6 @@ export const defaultTriggersTable = sqliteTable(
 export const dateTriggersTable = sqliteTable(
   'date_triggers',
   {
-    id: text('id').primaryKey(),
     triggerDateTime: integer('trigger_date_time', { mode: 'timestamp' }).notNull(),
     triggerTemp: tempColumn,
     operationMode: operationModeColumn,
