@@ -22,7 +22,7 @@ export const defaultTriggersApi = app
     createRoute({
       responses: {
         200: {
-          description: '',
+          description: 'OK',
           content: {
             'application/json': {
               schema: z.object({
