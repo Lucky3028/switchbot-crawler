@@ -1,9 +1,9 @@
-import { dateSchema, triggersSchema, type Env } from '@/model';
+import { dateSchema, triggersSchema, type Env, type Variables } from '@/model';
 import { OpenAPIHono } from '@hono/zod-openapi';
 import { zValidator } from '@hono/zod-validator';
 import type { SharedEnv } from 'cloudflare-env';
 
-const app = new OpenAPIHono<{ Bindings: SharedEnv & Env }>();
+const app = new OpenAPIHono<{ Bindings: SharedEnv & Env; Variables: Variables }>();
 
 export const triggersApi = app
   .get(

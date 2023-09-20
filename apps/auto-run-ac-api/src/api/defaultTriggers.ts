@@ -1,21 +1,12 @@
-import { defaultTriggersSchema, type Env } from '@/model';
+import { defaultTriggersSchema, type Variables, type Env } from '@/model';
 import { createRoute, OpenAPIHono } from '@hono/zod-openapi';
 import type { SharedEnv } from 'cloudflare-env';
 import { zValidator } from '@hono/zod-validator';
-import type { DrizzleD1Database } from 'drizzle-orm/d1';
-import { drizzle } from 'drizzle-orm/d1';
 import { defaultTriggersTable as table } from '@/db/schema';
 import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
-type Variables = { db: DrizzleD1Database };
-
 const app = new OpenAPIHono<{ Bindings: SharedEnv & Env; Variables: Variables }>();
-
-app.use('*', async (c, next) => {
-  c.set('db', drizzle(c.env.triggers));
-  await next();
-});
 
 export const defaultTriggersApi = app
   .openapi(

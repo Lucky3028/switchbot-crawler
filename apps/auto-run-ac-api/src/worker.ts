@@ -1,7 +1,14 @@
 import { OpenAPIHono } from '@hono/zod-openapi';
+import { drizzle } from 'drizzle-orm/d1';
 import { defaultTriggersApi, triggersApi } from './api';
+import type { Env, Variables } from './model';
 
-const app = new OpenAPIHono();
+const app = new OpenAPIHono<{ Bindings: Env; Variables: Variables }>();
+
+app.use('*', async (c, next) => {
+  c.set('db', drizzle(c.env.triggers));
+  await next();
+});
 
 const route = app
   .get('/', (c) => c.text('Hello Hono!'))
