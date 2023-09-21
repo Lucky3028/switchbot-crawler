@@ -58,6 +58,6 @@ export const triggerSchema = z.object({
 
 export const triggersSchema = z.array(triggerSchema);
 
-const defaultTriggerSchema = triggerSchema.omit({ id: true });
+export const defaultTriggerSchema = triggerSchema.omit({ dateTime: true }).extend({ time: timeSchema });
 
 export const defaultTriggersSchema = z.array(defaultTriggerSchema);
