@@ -45,9 +45,9 @@ const acSettingsSchema = z.object({
     .max(30, { message: 'Hour must be equal or less than 30' }),
 });
 
-const triggerSchema = z.object({
+export const triggerSchema = z.object({
   id: z.string().nonempty({ message: "Trigger's ID must be nonempty" }),
-  time: timeSchema,
+  dateTime: z.date(),
   temp: z
     .number({ invalid_type_error: 'Temp must be integer value' })
     .int({ message: 'Temp must be integer value' })
