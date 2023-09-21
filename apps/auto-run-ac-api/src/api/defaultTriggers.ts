@@ -1,10 +1,10 @@
-import { defaultTriggersSchema, type Variables, type Env } from '@/model';
+import { defaultTriggersSchema, type Variables, type Env, defaultTriggerSchema } from '@/model';
 import { createRoute, OpenAPIHono } from '@hono/zod-openapi';
 import type { SharedEnv } from 'cloudflare-env';
 import { zValidator } from '@hono/zod-validator';
 import { defaultTriggersTable as table } from '@/db/schema';
-import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
+import { getUrl, nanoid } from '@/lib';
 
 const app = new OpenAPIHono<{ Bindings: SharedEnv & Env; Variables: Variables }>();
 
@@ -32,7 +32,8 @@ export const defaultTriggersApi = app
     }),
     async (c) => {
       const values = await c.get('db').select().from(table);
-      const triggers = values.map(({ triggerTime, triggerTemp, operationMode, settingsTemp }) => ({
+      const triggers = values.map(({ triggerTime, triggerTemp, operationMode, settingsTemp, ...v }) => ({
+        ...v,
         temp: triggerTemp,
         ac: { mode: operationMode, temp: settingsTemp },
         time: { hour: triggerTime.getUTCHours(), minute: triggerTime.getUTCMinutes() },
@@ -42,11 +43,11 @@ export const defaultTriggersApi = app
       return c.jsonT({ success: true, data: response });
     },
   )
-  .put(
+  .post(
     '/',
     // @ts-ignore TS7030
     // eslint-disable-next-line consistent-return
-    zValidator('json', defaultTriggersSchema, (result, c) => {
+    zValidator('json', defaultTriggerSchema.omit({ id: true }), (result, c) => {
       if (c.req.raw.headers.get('Content-Type') !== 'application/json') {
         return c.jsonT({ success: false, messages: ['Content-Type must be "application/json"'] }, 415);
       }
@@ -55,19 +56,20 @@ export const defaultTriggersApi = app
       }
     }),
     async (c) => {
-      const insertSchema = z.array(createInsertSchema(table));
-      type InsertValues = z.infer<typeof insertSchema>;
       const contents = c.req.valid('json');
-      const values: InsertValues = contents.map((v) => ({
-        triggerTemp: v.temp,
-        triggerTime: new Date(2000, 4, 15, v.time.hour, v.time.minute),
-        settingsTemp: v.ac.temp,
-        operationMode: v.ac.mode,
-      }));
 
-      await c.get('db').delete(table);
-      await c.get('db').insert(table).values(values);
+      const id = nanoid();
+      await c
+        .get('db')
+        .insert(table)
+        .values({
+          id,
+          triggerTemp: contents.temp,
+          triggerTime: new Date(2000, 4, 15, contents.time.hour, contents.time.minute),
+          settingsTemp: contents.ac.temp,
+          operationMode: contents.ac.mode,
+        });
 
-      return c.body(null, 204);
+      return c.body(null, 201, { Location: `${getUrl(c.req)}/${id}` });
     },
   );
