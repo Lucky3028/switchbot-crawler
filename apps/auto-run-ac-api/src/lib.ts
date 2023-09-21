@@ -1,3 +1,4 @@
+import type { HonoRequest } from 'hono';
 import { customAlphabet } from 'nanoid';
 import { alphanumeric } from 'nanoid-dictionary';
 
@@ -13,3 +14,14 @@ export const parseDecimalInt = (str: string) => parseInt(str, 10);
  * @returns 英数字からなるnanoid。英字には大文字小文字いずれも含まれる
  */
 export const nanoid = () => customAlphabet(alphanumeric, 20)();
+
+/**
+ * HonoRequestからクエリ文字列を抜かしたURLを取得する
+ * @param req Request
+ * @returns クエリ文字列を抜かしたURL
+ */
+export const getUrl = (req: HonoRequest) => {
+  const url = new URL(req.url);
+
+  return `${url.origin}${url.pathname}`;
+};
