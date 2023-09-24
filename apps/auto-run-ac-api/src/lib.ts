@@ -1,4 +1,4 @@
-import type { HonoRequest } from 'hono';
+import type { Context, HonoRequest } from 'hono';
 import { customAlphabet } from 'nanoid';
 import { alphanumeric } from 'nanoid-dictionary';
 
@@ -25,3 +25,18 @@ export const getUrl = (req: HonoRequest) => {
 
   return `${url.origin}${url.pathname}`;
 };
+
+type HeaderRecord = Record<string, string | string[]>;
+
+/**
+ * Bodyが空の応答を生成する。
+ * jsonTが必ずBodyに値を含めてしまって、Bodyが空でないといけないステータスコードのレスポンスができないので、それを解決するためのラッパー関数。
+ * @param c Context
+ * @param status ステータスコード
+ * @param headers ヘッダ
+ * @returns レスポンス
+ */
+export const emptyJsonT = (c: Context, status: 101 | 204 | 205 | 304, headers?: HeaderRecord) => ({
+  ...c.jsonT({}),
+  response: c.body(null, status, headers),
+});
