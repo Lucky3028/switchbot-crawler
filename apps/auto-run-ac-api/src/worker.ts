@@ -5,15 +5,14 @@ import type { Env, Variables } from './model';
 
 const app = new OpenAPIHono<{ Bindings: Env; Variables: Variables }>();
 
+app.get('/', (c) => c.text('Hello Hono!'));
+
 app.use('*', async (c, next) => {
   c.set('db', drizzle(c.env.triggers));
   await next();
 });
 
-const route = app
-  .get('/', (c) => c.text('Hello Hono!'))
-  .route('/defaultTriggers', defaultTriggersApi)
-  .route('/triggers', triggersApi);
+const route = app.route('/defaultTriggers/*', defaultTriggersApi).route('/triggers/*', triggersApi);
 
 export type AppRoute = typeof route;
 
