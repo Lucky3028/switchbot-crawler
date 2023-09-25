@@ -56,7 +56,11 @@ export const defaultTriggersApi = app
       responses: {
         201: {
           description: 'Trigger is created',
-          content: { 'application/json': { schema: z.object({ success: z.boolean(), data: defaultTriggerSchema }) } },
+          content: {
+            'application/json': {
+              schema: z.object({ success: z.boolean(), data: z.object({ trigger: defaultTriggerSchema }) }),
+            },
+          },
         },
       },
       method: 'post',
@@ -77,7 +81,8 @@ export const defaultTriggersApi = app
           operationMode: contents.ac.mode,
         })
         .onConflictDoNothing();
-      const response = { success: true, data: { ...contents, id } };
+      const trigger = { ...contents, id };
+      const response = { success: true, data: { trigger } };
 
       return c.jsonT(response, 201, { Location: `${getUrl(c.req)}/${id}` });
     },
