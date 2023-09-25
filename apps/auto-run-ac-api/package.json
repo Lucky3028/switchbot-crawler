@@ -38,6 +38,7 @@
     "hono": "^3.6.0",
     "nanoid": "^4.0.2",
     "nanoid-dictionary": "^4.3.0",
+    "shared": "workspace:*",
     "zod": "^3.22.1"
   },
   "volta": {

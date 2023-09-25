@@ -111,6 +111,9 @@ importers:
       nanoid-dictionary:
         specifier: ^4.3.0
         version: 4.3.0
+      shared:
+        specifier: workspace:*
+        version: link:../../packages/shared
       zod:
         specifier: ^3.22.1
         version: 3.22.1
