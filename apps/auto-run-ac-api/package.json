@@ -5,7 +5,9 @@
   "main": "src/worker.ts",
   "scripts": {
     "deploy": "wrangler deploy",
-    "dev": "TZ=UTC wrangler dev",
+    "dev": "run-p dev:*",
+    "dev:run": "TZ=UTC wrangler dev",
+    "dev:swagger": "docker run --rm -p 8080:8080 -e SWAGGER_JSON_URL=http://localhost:8787/docs swaggerapi/swagger-ui > /dev/null 2>&1",
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src",
     "fmt": "prettier --check ./src",
