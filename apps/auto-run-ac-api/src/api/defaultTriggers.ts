@@ -4,6 +4,7 @@ import type { SharedEnv } from 'cloudflare-env';
 import { defaultTriggersTable as table } from '@/db/schema';
 import { z } from 'zod';
 import { getUrl, nanoid } from '@/lib';
+import { eq } from 'drizzle-orm';
 
 const app = new OpenAPIHono<{ Bindings: SharedEnv & Env; Variables: Variables }>();
 
@@ -85,5 +86,52 @@ export const defaultTriggersApi = app
       const response = { success: true, data: { trigger } };
 
       return c.jsonT(response, 201, { Location: `${getUrl(c.req)}/${id}` });
+    },
+  )
+  .openapi(
+    createRoute({
+      request: {
+        params: z.object({ id: z.string() }),
+      },
+      responses: {
+        200: {
+          description: 'The trigger is found',
+          content: {
+            'application/json': {
+              schema: z.object({ success: z.boolean(), data: z.object({ trigger: defaultTriggerSchema }) }),
+            },
+          },
+        },
+        404: {
+          description: 'The trigger is not found',
+          content: {
+            'application/json': {
+              schema: z.object({
+                success: z.boolean(),
+              }),
+            },
+          },
+        },
+      },
+      method: 'get',
+      path: '/:id',
+    }),
+    async (c) => {
+      const { id } = c.req.valid('param');
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      const [value, ..._others] = await c.get('db').select().from(table).where(eq(table.id, id));
+
+      if (!value) {
+        return c.jsonT({ success: false }, 404);
+      }
+
+      const trigger = {
+        ...value,
+        temp: value.triggerTemp,
+        ac: { mode: value.operationMode, temp: value.settingsTemp },
+        time: { hour: value.triggerTime.getUTCHours(), minute: value.triggerTime.getUTCMinutes() },
+      };
+
+      return c.jsonT({ success: true, data: { trigger } });
     },
   );
