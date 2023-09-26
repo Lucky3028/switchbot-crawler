@@ -21,13 +21,13 @@ app.openAPIRegistry.registerComponent('securitySchemes', 'basicAuth', { type: 'h
 
 // NOTE: app#doc31と同等だが、一部処理を変更するために自分で実装
 app.get('/docs', async (c) => {
-  const definitions = app.openAPIRegistry.definitions.map((v) => {
-    if (v.type === 'route') {
+  const definitions = app.openAPIRegistry.definitions.map((def) => {
+    if (def.type === 'route') {
       // NOTE: なぜか勝手にパスの最後にスラッシュを追加してくるので、ここで削除
-      return { type: v.type, route: { ...v.route, path: v.route.path.replace(/\/$/, '') } };
+      return { type: def.type, route: { ...def.route, path: def.route.path.replace(/\/$/, '') } };
     }
 
-    return v;
+    return def;
   });
   const generator = new OpenApiGeneratorV31(definitions);
   const config = {
