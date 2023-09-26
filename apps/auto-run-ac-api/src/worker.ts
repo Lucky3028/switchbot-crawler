@@ -1,6 +1,7 @@
 import { OpenAPIHono } from '@hono/zod-openapi';
 import { drizzle } from 'drizzle-orm/d1';
 import { cors } from 'hono/cors';
+import { OpenApiGeneratorV31 } from '@asteasolutions/zod-to-openapi';
 import { defaultTriggersApi, triggersApi } from './api';
 import type { Env, Variables } from './model';
 
@@ -18,13 +19,28 @@ app.use(
 
 app.openAPIRegistry.registerComponent('securitySchemes', 'basicAuth', { type: 'http', scheme: 'basic' });
 
-app.doc31('/docs', {
-  openapi: '3.1.0',
-  info: {
-    version: '1.0.0',
-    title: 'auto-run-api',
-  },
-  security: [{ basicAuth: [] }],
+// NOTE: app#doc31と同等だが、一部処理を変更するために自分で実装
+app.get('/docs', async (c) => {
+  const definitions = app.openAPIRegistry.definitions.map((v) => {
+    if (v.type === 'route') {
+      // NOTE: なぜか勝手にパスの最後にスラッシュを追加してくるので、ここで削除
+      return { type: v.type, route: { ...v.route, path: v.route.path.replace(/\/$/, '') } };
+    }
+
+    return v;
+  });
+  const generator = new OpenApiGeneratorV31(definitions);
+  const config = {
+    openapi: '3.1.0',
+    info: {
+      version: '1.0.0',
+      title: 'auto-run-api',
+    },
+    security: [{ basicAuth: [] }],
+  };
+  const document = generator.generateDocument(config);
+
+  return c.json(document);
 });
 
 app.use('*', async (c, next) => {
@@ -32,7 +48,7 @@ app.use('*', async (c, next) => {
   await next();
 });
 
-const route = app.route('/defaultTriggers/*', defaultTriggersApi).route('/triggers/*', triggersApi);
+const route = app.route('/defaultTriggers', defaultTriggersApi).route('/triggers', triggersApi);
 
 export type AppRoute = typeof route;
 
