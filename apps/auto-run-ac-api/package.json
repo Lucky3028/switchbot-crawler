@@ -32,6 +32,7 @@
     "wrangler": "^3.7.0"
   },
   "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^5.5.0",
     "@hono/zod-openapi": "^0.4.0",
     "@hono/zod-validator": "^0.1.8",
     "cloudflare-env": "workspace:*",

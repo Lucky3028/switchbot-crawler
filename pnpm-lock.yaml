@@ -87,6 +87,9 @@ importers:
 
   apps/auto-run-ac-api:
     dependencies:
+      '@asteasolutions/zod-to-openapi':
+        specifier: ^5.5.0
+        version: 5.5.0(zod@3.22.1)
       '@hono/zod-openapi':
         specifier: ^0.4.0
         version: 0.4.0(hono@3.6.0)(zod@3.22.1)
