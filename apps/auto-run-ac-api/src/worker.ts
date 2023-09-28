@@ -44,7 +44,7 @@ app.get('/docs', async (c) => {
 });
 
 app.use('*', async (c, next) => {
-  c.set('db', drizzle(c.env.triggers));
+  c.set('db', drizzle(c.env.TRIGGERS));
   await next();
 });
 

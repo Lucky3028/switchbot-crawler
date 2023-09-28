@@ -3,8 +3,7 @@ import type { DrizzleD1Database } from 'drizzle-orm/d1';
 import { parseDecimalInt } from './lib';
 
 export type Env = {
-  TRIGGERS: KVNamespace;
-  triggers: D1Database;
+  TRIGGERS: D1Database;
 };
 
 export type Variables = { db: DrizzleD1Database };
