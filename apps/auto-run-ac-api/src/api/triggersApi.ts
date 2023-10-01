@@ -15,13 +15,7 @@ export const triggersApi = app
           description: 'OK',
           content: {
             'application/json': {
-              schema: z.object({
-                success: z.boolean(),
-                data: z.object({
-                  counts: z.number().int().nonnegative(),
-                  triggers: triggersSchema,
-                }),
-              }),
+              schema: z.object({ triggers: triggersSchema }),
             },
           },
         },
@@ -37,9 +31,8 @@ export const triggersApi = app
         ac: { mode: operationMode, temp: settingsTemp },
         dateTime: triggerDateTime,
       }));
-      const response = { triggers, counts: triggers.length };
 
-      return c.jsonT({ success: true, data: response });
+      return c.jsonT({ triggers });
     },
   )
   .openapi(
@@ -58,7 +51,7 @@ export const triggersApi = app
           description: 'Trigger is created',
           content: {
             'application/json': {
-              schema: z.object({ success: z.boolean(), data: z.object({ trigger: triggerSchema }) }),
+              schema: z.object({ trigger: triggerSchema }),
             },
           },
         },
@@ -82,9 +75,8 @@ export const triggersApi = app
         })
         .onConflictDoNothing();
       const trigger = { ...contents, id };
-      const response = { success: true, data: { trigger } };
 
-      return c.jsonT(response, 201, { Location: `${getUrl(c.req)}/${id}` });
+      return c.jsonT({ trigger }, 201, { Location: `${getUrl(c.req)}/${id}` });
     },
   )
   .openapi(
@@ -97,7 +89,7 @@ export const triggersApi = app
           description: 'The trigger is found',
           content: {
             'application/json': {
-              schema: z.object({ success: z.boolean(), data: z.object({ trigger: triggerSchema }) }),
+              schema: z.object({ trigger: triggerSchema }),
             },
           },
         },
@@ -130,7 +122,7 @@ export const triggersApi = app
         dateTime: value.triggerDateTime,
       };
 
-      return c.jsonT({ success: true, data: { trigger } });
+      return c.jsonT({ trigger });
     },
   )
   .openapi(

@@ -15,13 +15,7 @@ export const defaultTriggersApi = app
           description: 'OK',
           content: {
             'application/json': {
-              schema: z.object({
-                success: z.boolean(),
-                data: z.object({
-                  counts: z.number().int().nonnegative(),
-                  triggers: defaultTriggersSchema,
-                }),
-              }),
+              schema: z.object({ triggers: defaultTriggersSchema }),
             },
           },
         },
@@ -37,9 +31,8 @@ export const defaultTriggersApi = app
         ac: { mode: operationMode, temp: settingsTemp },
         time: { hour: triggerTime.getUTCHours(), minute: triggerTime.getUTCMinutes() },
       }));
-      const response = { triggers, counts: triggers.length };
 
-      return c.jsonT({ success: true, data: response });
+      return c.jsonT({ triggers });
     },
   )
   .openapi(
@@ -58,7 +51,7 @@ export const defaultTriggersApi = app
           description: 'Trigger is created',
           content: {
             'application/json': {
-              schema: z.object({ success: z.boolean(), data: z.object({ trigger: defaultTriggerSchema }) }),
+              schema: z.object({ trigger: defaultTriggerSchema }),
             },
           },
         },
@@ -82,9 +75,8 @@ export const defaultTriggersApi = app
         })
         .onConflictDoNothing();
       const trigger = { ...contents, id };
-      const response = { success: true, data: { trigger } };
 
-      return c.jsonT(response, 201, { Location: `${getUrl(c.req)}/${id}` });
+      return c.jsonT({ trigger }, 201, { Location: `${getUrl(c.req)}/${id}` });
     },
   )
   .openapi(
@@ -97,19 +89,12 @@ export const defaultTriggersApi = app
           description: 'The trigger is found',
           content: {
             'application/json': {
-              schema: z.object({ success: z.boolean(), data: z.object({ trigger: defaultTriggerSchema }) }),
+              schema: z.object({ trigger: defaultTriggerSchema }),
             },
           },
         },
         404: {
           description: 'The trigger is not found',
-          content: {
-            'application/json': {
-              schema: z.object({
-                success: z.boolean(),
-              }),
-            },
-          },
         },
       },
       method: 'get',
@@ -120,7 +105,7 @@ export const defaultTriggersApi = app
       const [value] = await c.get('db').select().from(table).where(eq(table.id, id));
 
       if (!value) {
-        return c.jsonT({ success: false }, 404);
+        return emptyJsonT(c, 404);
       }
 
       const trigger = {
@@ -130,7 +115,7 @@ export const defaultTriggersApi = app
         time: { hour: value.triggerTime.getUTCHours(), minute: value.triggerTime.getUTCMinutes() },
       };
 
-      return c.jsonT({ success: true, data: { trigger } });
+      return c.jsonT({ trigger });
     },
   )
   .openapi(
