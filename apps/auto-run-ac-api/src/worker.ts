@@ -31,7 +31,7 @@ app.get('/docs', async (c) => {
   });
   const generator = new OpenApiGeneratorV31(definitions);
   const config = {
-    openapi: '3.1.0',
+    openapi: '3.0.0',
     info: {
       version: '1.0.0',
       title: 'auto-run-api',
