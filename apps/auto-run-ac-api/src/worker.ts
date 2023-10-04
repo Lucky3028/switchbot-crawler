@@ -1,47 +1,55 @@
-import type { SharedEnv } from 'cloudflare-env';
-import { Hono } from 'hono';
-import { zValidator } from '@hono/zod-validator';
-import { defaultTriggersSchema } from './model';
+import { OpenAPIHono } from '@hono/zod-openapi';
+import { drizzle } from 'drizzle-orm/d1';
+import { cors } from 'hono/cors';
+import { OpenApiGeneratorV31 } from '@asteasolutions/zod-to-openapi';
+import { defaultTriggersApi, triggersApi } from './api';
+import type { Env, Variables } from './model';
 
-type Env = {
-  TRIGGERS: KVNamespace;
-};
+const app = new OpenAPIHono<{ Bindings: Env; Variables: Variables }>();
 
-const app = new Hono<{ Bindings: SharedEnv & Env }>().basePath('/api');
+app.get('/', (c) => c.text('Hello Hono!'));
 
-const route = app
-  .get('/', (c) => c.text('Hello Hono!'))
-  .get('/defaultTriggers', async (c) => {
-    const values = await c.env.TRIGGERS.get('defaultTriggers', { type: 'json' });
-    if (!values) {
-      return c.jsonT({ success: true, data: { counts: 0, triggers: [] } });
+// TODO: fix CORS origin
+app.use(
+  '*',
+  cors({
+    origin: ['http://localhost:8080'],
+  }),
+);
+
+app.openAPIRegistry.registerComponent('securitySchemes', 'basicAuth', { type: 'http', scheme: 'basic' });
+
+// NOTE: app#doc31と同等だが、一部処理を変更するために自分で実装
+app.get('/docs', async (c) => {
+  const definitions = app.openAPIRegistry.definitions.map((def) => {
+    if (def.type === 'route') {
+      // NOTE: なぜか勝手にパスの最後にスラッシュを追加してくるので、ここで削除
+      return { type: def.type, route: { ...def.route, path: def.route.path.replace(/\/$/, '') } };
     }
 
-    const parsed = defaultTriggersSchema.parse(values);
-    const response = { ...parsed, counts: parsed.triggers.length };
-
-    return c.jsonT({ success: true, data: response });
-  })
-  .put(
-    // @ts-ignore TS7030
-    // eslint-disable-next-line consistent-return
-    zValidator('json', defaultTriggersSchema, (result, c) => {
-      if (c.req.headers.get('Content-Type') !== 'application/json') {
-        return c.jsonT({ success: false, messages: ['Content-Type must be "application/json"'] }, 400);
-      }
-      if (!result.success) {
-        return c.jsonT({ success: false, messages: result.error.issues.map((i) => i.message) }, 400);
-      }
-    }),
-    async (c) => {
-      const contents = c.req.valid('json');
-
-      c.executionCtx.waitUntil(c.env.TRIGGERS.put('defaultTriggers', JSON.stringify(contents)));
-
-      return c.jsonT({ success: true, data: {} }, 200);
+    return def;
+  });
+  const generator = new OpenApiGeneratorV31(definitions);
+  const config = {
+    openapi: '3.0.0',
+    info: {
+      version: '1.0.0',
+      title: 'auto-run-api',
     },
-  );
+    security: [{ basicAuth: [] }],
+  };
+  const document = generator.generateDocument(config);
 
-export type ApiRoute = typeof route;
+  return c.json(document);
+});
+
+app.use('*', async (c, next) => {
+  c.set('db', drizzle(c.env.TRIGGERS));
+  await next();
+});
+
+const route = app.route('/defaultTriggers', defaultTriggersApi).route('/triggers', triggersApi);
+
+export type AppRoute = typeof route;
 
 export default app;

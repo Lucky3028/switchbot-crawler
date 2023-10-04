@@ -39,7 +39,8 @@
     "typescript": "^5.1.6",
     "typesync": "^0.11.1"
   },
-  "engines": {
-    "node": ">=16.13.0"
+  "volta": {
+    "node": "18.17.1",
+    "pnpm": "8.7.4"
   }
 }

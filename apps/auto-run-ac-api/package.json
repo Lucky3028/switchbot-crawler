@@ -5,24 +5,47 @@
   "main": "src/worker.ts",
   "scripts": {
     "deploy": "wrangler deploy",
-    "dev": "wrangler dev",
+    "dev": "run-p dev:*",
+    "dev:run": "TZ=UTC wrangler dev",
+    "dev:swagger": "docker run --rm -p 8080:8080 -e SWAGGER_JSON_URL=http://localhost:8787/docs swaggerapi/swagger-ui > /dev/null 2>&1",
     "lint": "eslint ./src",
     "lint:fix": "eslint --fix ./src",
     "fmt": "prettier --check ./src",
-    "fmt:fix": "prettier --write ./src"
+    "fmt:fix": "prettier --write ./src",
+    "migrate": "run-s migrate:gen migrate:run",
+    "migrate:gen": "drizzle-kit generate:sqlite",
+    "migrate:run": "wrangler d1 migrations apply triggers --local"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230419.0",
+    "@types/better-sqlite3": "^7.6.5",
+    "@types/eslint": "^8.44.2",
+    "@types/nanoid-dictionary": "^4.2.0",
+    "better-sqlite3": "^8.6.0",
+    "drizzle-kit": "^0.19.13",
     "eslint": "^8.48.0",
+    "eslint-config-custom": "workspace:*",
+    "npm-run-all": "^4.1.5",
     "prettier": "^3.0.1",
     "tsconfig": "workspace:*",
     "typescript": "^5.0.4",
-    "wrangler": "^3.0.0"
+    "wrangler": "^3.7.0"
   },
   "dependencies": {
+    "@asteasolutions/zod-to-openapi": "^5.5.0",
+    "@hono/zod-openapi": "^0.4.0",
     "@hono/zod-validator": "^0.1.8",
     "cloudflare-env": "workspace:*",
-    "hono": "^3.5.4",
+    "drizzle-orm": "^0.28.6",
+    "drizzle-zod": "^0.5.1",
+    "hono": "^3.6.0",
+    "nanoid": "^4.0.2",
+    "nanoid-dictionary": "^4.3.0",
+    "shared": "workspace:*",
     "zod": "^3.22.1"
+  },
+  "volta": {
+    "node": "18.17.1",
+    "pnpm": "8.7.4"
   }
 }
