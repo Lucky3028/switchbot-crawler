@@ -55,6 +55,9 @@ export const defaultTriggersApi = app
             },
           },
         },
+        409: {
+          description: 'The trigger has already been created',
+        },
       },
       method: 'post',
       path: '/',
@@ -63,7 +66,7 @@ export const defaultTriggersApi = app
       const contents = c.req.valid('json');
 
       const id = nanoid();
-      await c
+      const createdTriggers = await c
         .get('db')
         .insert(table)
         .values({
@@ -73,7 +76,13 @@ export const defaultTriggersApi = app
           settingsTemp: contents.ac.temp,
           operationMode: contents.ac.mode,
         })
-        .onConflictDoNothing();
+        .onConflictDoNothing()
+        .returning({ createdId: table.id });
+
+      if (createdTriggers.length === 0) {
+        return emptyJsonT(c, 409);
+      }
+
       const trigger = { ...contents, id };
 
       return c.jsonT({ trigger }, 201, { Location: `${getUrl(c.req)}/${id}` });
