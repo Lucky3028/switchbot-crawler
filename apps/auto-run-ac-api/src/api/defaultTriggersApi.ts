@@ -79,7 +79,8 @@ export const defaultTriggersApi = app
         .onConflictDoNothing()
         .returning({ createdId: table.id });
 
-      if (createdTriggers.length === 0) {
+      const isConflicted = createdTriggers.length === 0;
+      if (isConflicted) {
         return emptyJsonT(c, 409);
       }
 
@@ -160,7 +161,8 @@ export const defaultTriggersApi = app
         .where(eq(table.id, id))
         .returning({ updatedId: table.id });
 
-      if (updatedTriggers.length === 0) {
+      const isTriggerNotFound = updatedTriggers.length === 0;
+      if (isTriggerNotFound) {
         return emptyJsonT(c, 404);
       }
 
@@ -200,7 +202,8 @@ export const defaultTriggersApi = app
         .where(eq(table.id, id))
         .returning({ updatedId: table.id });
 
-      if (updatedTriggers.length === 0) {
+      const isTriggerNotFound = updatedTriggers.length === 0;
+      if (isTriggerNotFound) {
         return emptyJsonT(c, 404);
       }
 
@@ -240,7 +243,8 @@ export const defaultTriggersApi = app
         .where(eq(table.id, id))
         .returning({ updatedId: table.id });
 
-      if (updatedTriggers.length === 0) {
+      const isTriggerNotFound = updatedTriggers.length === 0;
+      if (isTriggerNotFound) {
         return emptyJsonT(c, 404);
       }
 
@@ -280,7 +284,8 @@ export const defaultTriggersApi = app
         .where(eq(table.id, id))
         .returning({ updatedId: table.id });
 
-      if (updatedTriggers.length === 0) {
+      const isTriggerNotFound = updatedTriggers.length === 0;
+      if (isTriggerNotFound) {
         return emptyJsonT(c, 404);
       }
 
@@ -307,7 +312,8 @@ export const defaultTriggersApi = app
       const { id } = c.req.valid('param');
       const deletedTriggers = await c.get('db').delete(table).where(eq(table.id, id)).returning({ deletedId: table.id });
 
-      if (deletedTriggers.length === 0) {
+      const isTriggerNotFound = deletedTriggers.length === 0;
+      if (isTriggerNotFound) {
         return emptyJsonT(c, 404);
       }
 
