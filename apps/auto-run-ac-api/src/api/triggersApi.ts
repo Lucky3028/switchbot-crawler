@@ -1,4 +1,4 @@
-import { triggersSchema, type Env, type Variables, triggerSchema, acSettingsSchema } from '@/model';
+import { triggersSchema, type Env, type Variables, triggerSchema, acSettingsSchema } from '@/schema';
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import type { SharedEnv } from 'cloudflare-env';
 import { dateTriggersTable as table } from '@/db/schema';

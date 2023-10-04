@@ -3,7 +3,7 @@ import { drizzle } from 'drizzle-orm/d1';
 import { cors } from 'hono/cors';
 import { OpenApiGeneratorV31 } from '@asteasolutions/zod-to-openapi';
 import { defaultTriggersApi, triggersApi } from './api';
-import type { Env, Variables } from './model';
+import type { Env, Variables } from './schema';
 
 const app = new OpenAPIHono<{ Bindings: Env; Variables: Variables }>();
 
