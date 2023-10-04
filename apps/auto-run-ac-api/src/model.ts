@@ -31,7 +31,7 @@ export const acSettingsSchema = z
 
 export const triggerSchema = z.object({
   id: z.string().nonempty({ message: "Trigger's ID must be nonempty" }).openapi({ example: 'W5vQ3TMBUFvaRLRf88VH' }),
-  dateTime: z.date().openapi({ example: '2020-01-15T09:30:00.000Z' }),
+  dateTime: z.coerce.date().openapi({ example: '2020-01-15T09:30:00.000Z' }),
   temp: z
     .number({ invalid_type_error: 'Temp must be integer value' })
     .int({ message: 'Temp must be integer value' })
