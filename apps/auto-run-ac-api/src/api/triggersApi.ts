@@ -95,13 +95,6 @@ export const triggersApi = app
         },
         404: {
           description: 'The trigger is not found',
-          content: {
-            'application/json': {
-              schema: z.object({
-                success: z.boolean(),
-              }),
-            },
-          },
         },
       },
       method: 'get',
@@ -112,7 +105,7 @@ export const triggersApi = app
       const [value] = await c.get('db').select().from(table).where(eq(table.id, id));
 
       if (!value) {
-        return c.jsonT({ success: false }, 404);
+        return emptyJsonT(c, 204);
       }
 
       const trigger = {
@@ -141,6 +134,9 @@ export const triggersApi = app
         204: {
           description: 'The trigger is modified',
         },
+        404: {
+          description: 'The trigger is not found',
+        },
       },
       method: 'put',
       path: '/{id}/dateTime',
@@ -148,7 +144,16 @@ export const triggersApi = app
     async (c) => {
       const { id } = c.req.valid('param');
       const { dateTime } = c.req.valid('json');
-      await c.get('db').update(table).set({ triggerDateTime: dateTime }).where(eq(table.id, id));
+      const updatedTriggers = await c
+        .get('db')
+        .update(table)
+        .set({ triggerDateTime: dateTime })
+        .where(eq(table.id, id))
+        .returning({ updatedId: table.id });
+
+      if (updatedTriggers.length === 0) {
+        return emptyJsonT(c, 404);
+      }
 
       return emptyJsonT(c, 204);
     },
@@ -169,6 +174,9 @@ export const triggersApi = app
         204: {
           description: 'The trigger is modified',
         },
+        404: {
+          description: 'The trigger is not found',
+        },
       },
       method: 'put',
       path: '/{id}/temp',
@@ -176,7 +184,16 @@ export const triggersApi = app
     async (c) => {
       const { id } = c.req.valid('param');
       const { temp } = c.req.valid('json');
-      await c.get('db').update(table).set({ triggerTemp: temp }).where(eq(table.id, id));
+      const updatedTriggers = await c
+        .get('db')
+        .update(table)
+        .set({ triggerTemp: temp })
+        .where(eq(table.id, id))
+        .returning({ updatedId: table.id });
+
+      if (updatedTriggers.length === 0) {
+        return emptyJsonT(c, 404);
+      }
 
       return emptyJsonT(c, 204);
     },
@@ -197,6 +214,9 @@ export const triggersApi = app
         204: {
           description: 'The trigger is modified',
         },
+        404: {
+          description: 'The trigger is not found',
+        },
       },
       method: 'put',
       path: '/{id}/acMode',
@@ -204,7 +224,16 @@ export const triggersApi = app
     async (c) => {
       const { id } = c.req.valid('param');
       const { mode } = c.req.valid('json');
-      await c.get('db').update(table).set({ operationMode: mode }).where(eq(table.id, id));
+      const updatedTriggers = await c
+        .get('db')
+        .update(table)
+        .set({ operationMode: mode })
+        .where(eq(table.id, id))
+        .returning({ updatedId: table.id });
+
+      if (updatedTriggers.length === 0) {
+        return emptyJsonT(c, 404);
+      }
 
       return emptyJsonT(c, 204);
     },
@@ -225,6 +254,9 @@ export const triggersApi = app
         204: {
           description: 'The trigger is modified',
         },
+        404: {
+          description: 'The trigger is not found',
+        },
       },
       method: 'put',
       path: '/{id}/acTemp',
@@ -232,7 +264,16 @@ export const triggersApi = app
     async (c) => {
       const { id } = c.req.valid('param');
       const { temp } = c.req.valid('json');
-      await c.get('db').update(table).set({ settingsTemp: temp }).where(eq(table.id, id));
+      const updatedTriggers = await c
+        .get('db')
+        .update(table)
+        .set({ settingsTemp: temp })
+        .where(eq(table.id, id))
+        .returning({ updatedId: table.id });
+
+      if (updatedTriggers.length === 0) {
+        return emptyJsonT(c, 404);
+      }
 
       return emptyJsonT(c, 204);
     },
@@ -246,13 +287,20 @@ export const triggersApi = app
         204: {
           description: 'The trigger is deleted',
         },
+        404: {
+          description: 'The trigger is not found',
+        },
       },
       method: 'delete',
       path: '/{id}',
     }),
     async (c) => {
       const { id } = c.req.valid('param');
-      await c.get('db').delete(table).where(eq(table.id, id));
+      const deletedTriggers = await c.get('db').delete(table).where(eq(table.id, id)).returning({ deletedId: table.id });
+
+      if (deletedTriggers.length === 0) {
+        return emptyJsonT(c, 404);
+      }
 
       return emptyJsonT(c, 204);
     },

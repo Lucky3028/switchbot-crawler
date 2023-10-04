@@ -134,6 +134,9 @@ export const defaultTriggersApi = app
         204: {
           description: 'The trigger is modified',
         },
+        404: {
+          description: 'The trigger is not found',
+        },
       },
       method: 'put',
       path: '/{id}/time',
@@ -141,11 +144,16 @@ export const defaultTriggersApi = app
     async (c) => {
       const { id } = c.req.valid('param');
       const { time } = c.req.valid('json');
-      await c
+      const updatedTriggers = await c
         .get('db')
         .update(table)
         .set({ triggerTime: new Date(2000, 4, 15, time.hour, time.minute) })
-        .where(eq(table.id, id));
+        .where(eq(table.id, id))
+        .returning({ updatedId: table.id });
+
+      if (updatedTriggers.length === 0) {
+        return emptyJsonT(c, 404);
+      }
 
       return emptyJsonT(c, 204);
     },
@@ -166,6 +174,9 @@ export const defaultTriggersApi = app
         204: {
           description: 'The trigger is modified',
         },
+        404: {
+          description: 'The trigger is not found',
+        },
       },
       method: 'put',
       path: '/{id}/temp',
@@ -173,7 +184,16 @@ export const defaultTriggersApi = app
     async (c) => {
       const { id } = c.req.valid('param');
       const { temp } = c.req.valid('json');
-      await c.get('db').update(table).set({ triggerTemp: temp }).where(eq(table.id, id));
+      const updatedTriggers = await c
+        .get('db')
+        .update(table)
+        .set({ triggerTemp: temp })
+        .where(eq(table.id, id))
+        .returning({ updatedId: table.id });
+
+      if (updatedTriggers.length === 0) {
+        return emptyJsonT(c, 404);
+      }
 
       return emptyJsonT(c, 204);
     },
@@ -194,6 +214,9 @@ export const defaultTriggersApi = app
         204: {
           description: 'The trigger is modified',
         },
+        404: {
+          description: 'The trigger is not found',
+        },
       },
       method: 'put',
       path: '/{id}/acMode',
@@ -201,7 +224,16 @@ export const defaultTriggersApi = app
     async (c) => {
       const { id } = c.req.valid('param');
       const { mode } = c.req.valid('json');
-      await c.get('db').update(table).set({ operationMode: mode }).where(eq(table.id, id));
+      const updatedTriggers = await c
+        .get('db')
+        .update(table)
+        .set({ operationMode: mode })
+        .where(eq(table.id, id))
+        .returning({ updatedId: table.id });
+
+      if (updatedTriggers.length === 0) {
+        return emptyJsonT(c, 404);
+      }
 
       return emptyJsonT(c, 204);
     },
@@ -222,6 +254,9 @@ export const defaultTriggersApi = app
         204: {
           description: 'The trigger is modified',
         },
+        404: {
+          description: 'The trigger is not found',
+        },
       },
       method: 'put',
       path: '/{id}/acTemp',
@@ -229,7 +264,16 @@ export const defaultTriggersApi = app
     async (c) => {
       const { id } = c.req.valid('param');
       const { temp } = c.req.valid('json');
-      await c.get('db').update(table).set({ settingsTemp: temp }).where(eq(table.id, id));
+      const updatedTriggers = await c
+        .get('db')
+        .update(table)
+        .set({ settingsTemp: temp })
+        .where(eq(table.id, id))
+        .returning({ updatedId: table.id });
+
+      if (updatedTriggers.length === 0) {
+        return emptyJsonT(c, 404);
+      }
 
       return emptyJsonT(c, 204);
     },
@@ -243,13 +287,20 @@ export const defaultTriggersApi = app
         204: {
           description: 'The trigger is deleted',
         },
+        404: {
+          description: 'The trigger is not found',
+        },
       },
       method: 'delete',
       path: '/{id}',
     }),
     async (c) => {
       const { id } = c.req.valid('param');
-      await c.get('db').delete(table).where(eq(table.id, id));
+      const deletedTriggers = await c.get('db').delete(table).where(eq(table.id, id)).returning({ deletedId: table.id });
+
+      if (deletedTriggers.length === 0) {
+        return emptyJsonT(c, 404);
+      }
 
       return emptyJsonT(c, 204);
     },
