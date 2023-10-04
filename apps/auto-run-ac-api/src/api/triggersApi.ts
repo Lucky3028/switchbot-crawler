@@ -1,9 +1,10 @@
-import { triggersSchema, type Env, type Variables, triggerSchema, acSettingsSchema } from '@/schema';
+import { triggersSchema, triggerSchema, acSettingsSchema } from '@/schema';
 import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi';
 import type { SharedEnv } from 'cloudflare-env';
 import { dateTriggersTable as table } from '@/db/schema';
 import { emptyJsonT, getUrl, nanoid } from '@/lib';
 import { eq } from 'drizzle-orm';
+import type { Env, Variables } from '@/type';
 
 const app = new OpenAPIHono<{ Bindings: SharedEnv & Env; Variables: Variables }>();
 
