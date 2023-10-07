@@ -1,4 +1,4 @@
-import type { Context, HonoRequest } from 'hono';
+import type { Context } from 'hono';
 import { customAlphabet } from 'nanoid';
 import { alphanumeric } from 'nanoid-dictionary';
 
@@ -10,11 +10,11 @@ export const nanoid = () => customAlphabet(alphanumeric, 20)();
 
 /**
  * HonoRequestからクエリ文字列を抜かしたURLを取得する
- * @param req Request
+ * @param rawUrl URL
  * @returns クエリ文字列を抜かしたURL
  */
-export const getUrl = (req: HonoRequest) => {
-  const url = new URL(req.url);
+export const getUrl = (rawUrl: string) => {
+  const url = new URL(rawUrl);
 
   return `${url.origin}${url.pathname}`;
 };

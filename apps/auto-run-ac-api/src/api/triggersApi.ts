@@ -87,7 +87,7 @@ export const triggersApi = app
 
       const trigger = { ...contents, id };
 
-      return c.jsonT({ trigger }, 201, { Location: `${getUrl(c.req)}/${id}` });
+      return c.jsonT({ trigger }, 201, { Location: `${getUrl(c.req.url)}/${id}` });
     },
   )
   .openapi(
