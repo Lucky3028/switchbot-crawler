@@ -29,7 +29,10 @@ type HeaderRecord = Record<string, string | string[]>;
  * @param headers ヘッダ
  * @returns レスポンス
  */
-export const emptyJsonT = (c: Context, status: number, headers?: HeaderRecord) => ({
-  ...c.jsonT({}),
-  response: c.body(null, status, headers),
-});
+export const emptyJsonT = (c: Context, status: number, headers?: HeaderRecord) =>
+  ({
+    status,
+    data: {},
+    format: 'json',
+    response: c.body(null, status, headers),
+  }) as const;
